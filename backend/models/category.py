@@ -27,6 +27,8 @@ def delete_category(id_category):
         cursor.execute(delete,(id_category,))
         con.commit()
         con.close()
+        if cursor.rowcount == 0:
+            return jsonify({'Mensaje': 'ID no encontrado'})
         return jsonify({'Mensaje':f'Categoria con ID {id_category} eliminada'})
     except Exception as e:
         return jsonify({'Error': str(e)})
