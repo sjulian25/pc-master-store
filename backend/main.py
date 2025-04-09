@@ -10,5 +10,6 @@ app.register_blueprint(category_bp, url_prefix='/api/catalog/')
 
 
 
+
 if __name__ == "__main__":
     app.run(debug = True)
