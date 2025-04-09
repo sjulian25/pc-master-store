@@ -1,12 +1,12 @@
 from flask import Flask
 from flask_cors import CORS
-from models.category import category_bp
+from routes.catalog import category_bp
 
 app = Flask(__name__)
 CORS(app)
 
 
-app.register_blueprint(category_bp, url_prefix='/category')
+app.register_blueprint(category_bp, url_prefix='/api/catalog/')
 
 
 
