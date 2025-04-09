@@ -13,6 +13,25 @@ def get_category():
         con.close()
         return(categories)
     except Exception as e:
+        return jsonify({'error': str(e)})
+    
+@category_bp.route("/create/products", methods = ['POST'])
+def create_category():
+        data = request.json
+        name = data.get('name')
+        # TODO: CAMBIAR EL CAMPO DE LA TABLA YA QUE ESTA COMO DEFAULT NULL
+        description = data.get('description')
+        try:
+            con = MySQLdb.connect(**cnn,cursorclass=MySQLdb.cursors.DictCursor)
+            cursor = con.cursor()
+            insertdata = 'INSERT INTO category (name,description) VALUES (%s,%s)'
+            cursor.execute(insertdata,(name,description))
+            con.commit()
+            con.close()
+            return jsonify({'Mensaje': 'creado' })
+        except Exception as e:
+            return jsonify({'Error': str(e)}) 
+
         return [e]
 
 """ @category_bp.route("/delete/products/<int:id_category>", methods=['DELETE'])
