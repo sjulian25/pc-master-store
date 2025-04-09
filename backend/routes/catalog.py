@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from models.product import get_all_products, get_product_by_id  # ejemplo
+from models.product import get_all_products, get_product_by_id
 
 catalog_bp = Blueprint("catalog", __name__)
 
@@ -10,7 +10,7 @@ def list_products():
     return jsonify(products)
 
 
-@catalog_bp.route("/products/<int:id_product>", method=["GET"])
+@catalog_bp.route("/products/<int:id_product>", methods=["GET"])
 def get_product(id_product):
     product = get_product_by_id(id_product)
     if product:

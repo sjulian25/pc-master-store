@@ -14,11 +14,11 @@ def get_all_products():
     return []
 
 
-def get_product_by_id(product_id):
+def get_product_by_id(id_product):
     conn = get_connection()
     if conn:
         cursor = conn.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute("SELECT * FROM product WHERE id = %s", (product_id,))
+        cursor.execute("SELECT * FROM product WHERE id_product = %s", (id_product,))
         product = cursor.fetchone()
         cursor.close()
         conn.close()
