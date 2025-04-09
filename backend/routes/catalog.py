@@ -16,3 +16,6 @@ def get_product(id_product):
     if product:
         return jsonify(product)
     return jsonify({"message": "Product not found"}), 404
+
+
+# ?filter by category or product type should be do it here or in the frontend?
