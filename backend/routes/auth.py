@@ -1,5 +1,5 @@
 from flask import request,Blueprint,jsonify
-from models.user import register_user,get_user_by_email,get_user_by_id
+from models.user import register_user,get_user_by_email,get_user_by_id,get_all_user,get_login
 
 
 auth_bp=Blueprint("auth",__name__)
@@ -49,12 +49,32 @@ def search_id_user(id_users):
         return jsonify(user_data), 200
     else:
         return jsonify({'message':'User not found'}), 404
-
-
-
-
-
-
     
+@auth_bp.route('/login', methods=['POST'])
+def login_user():
+    data=request.get_json()
+    user_email=data.get('email')
+    user_password=data.get('user_password')
+    if not user_email or not user_password:
+        return ({'message':'email and password are requerided'}), 400
+
+    result, status_code = get_login(user_email, user_password)
+    return result, status_code
+    
+@auth_bp.route('/search/all', methods=['GET'])
+def search_all_user():
+    
+    users=get_all_user()
+
+    if users:
+        return jsonify(users), 200
+    else:
+        return jsonify({'message':'Users not found'}), 404
+
+
+
+
+
+
 
 

@@ -1,6 +1,6 @@
 from db_connection import get_connection
 from flask import jsonify, session
-import MySQLdb.cursors,hashlib,secrets
+import MySQLdb.cursors,hashlib,secrets,pymysql
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -54,7 +54,7 @@ def get_user_by_id(id_users):
     try:
         cnn=get_connection()
         with cnn.cursor() as cursor:
-            search="SELECT username,email,last_login FROM users WHERE id_users = %s"
+            search="SELECT id_users,username,email,last_login FROM users WHERE id_users = %s"
             cursor.execute(search,(id_users,))
             user = cursor.fetchone()
 
@@ -64,3 +64,49 @@ def get_user_by_id(id_users):
     except Exception as e:
         print(f'Errot searching user by id: {e}')
         return None
+    
+#login de usuario
+def get_login(email,password):
+    try:
+        cnn=get_connection()
+
+        with cnn.cursor(MySQLdb.cursors.DictCursor) as cursor:
+            cursor.execute("SELECT user_password,salt FROM users WHERE email = %s AND is_active=1",(email,))
+            user=cursor.fetchone()
+        cnn.close()
+        if user is None:
+            return jsonify({'message': 'User not found'}), 404
+        stored_hasd=user['user_password']
+        salt=user['salt']
+
+        raw_password=password+salt
+        password_confirm=hashlib.sha256(raw_password.encode('utf-8')).hexdigest()
+
+        if password_confirm == stored_hasd:
+            return jsonify({'message': 'Login successful'}), 200
+
+        return jsonify({'message': 'Invalid email or password'}), 401
+        
+        
+
+    except Exception as e:
+        return jsonify({'message': f'Error: {str(e)}'}), 500
+    
+    
+#consultar todos los clientes
+def get_all_user():
+    try:
+        cnn=get_connection()
+       
+        with cnn.cursor(MySQLdb.cursors.DictCursor) as cursor:
+            search = "SELECT id_users,username,email,last_login FROM users WHERE is_active = 1"
+            cursor.execute(search,)
+            users=cursor.fetchall()
+        cnn.close()
+        return users
+    
+    except Exception as e:
+        print(f'Error searching users: {e}')
+        return None
+
+
