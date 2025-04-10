@@ -49,3 +49,18 @@ def get_user_by_email(email):
         return None
     
 
+#consultar el cliente por el id
+def get_user_by_id(id_users):
+    try:
+        cnn=get_connection()
+        with cnn.cursor() as cursor:
+            search="SELECT username,email,last_login FROM users WHERE id_users = %s"
+            cursor.execute(search,(id_users,))
+            user = cursor.fetchone()
+
+        cnn.close()
+        return user
+    
+    except Exception as e:
+        print(f'Errot searching user by id: {e}')
+        return None

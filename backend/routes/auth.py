@@ -1,5 +1,5 @@
 from flask import request,Blueprint,jsonify
-from models.user import register_user,get_user_by_email
+from models.user import register_user,get_user_by_email,get_user_by_id
 
 
 auth_bp=Blueprint("auth",__name__)
@@ -30,6 +30,21 @@ def search_email_user(email):
             "name":user[1],
             "email":user[2],
             "last_login":user[3]
+        }
+        return jsonify(user_data), 200
+    else:
+        return jsonify({'message':'User not found'}), 404
+    
+@auth_bp.route('/search/<int:id_users>', methods=['GET'])
+def search_id_user(id_users):
+    
+    user=get_user_by_id(id_users)
+
+    if user:
+        user_data={
+            "name":user[0],
+            "email":user[1],
+            "last_login":user[2]
         }
         return jsonify(user_data), 200
     else:
