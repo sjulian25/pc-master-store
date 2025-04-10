@@ -1,8 +1,8 @@
-from models.category import get_all_category,create_category,delete_category,update_category
+from models.category import get_all_category,create_category,delete_category,update_category,activate_category
 
 
-def process_get_all_category():
-    success, result = get_all_category()
+def process_get_all_category(id_category):
+    success, result = get_all_category(id_category)
     
     if not success:
         return{
@@ -37,7 +37,7 @@ def process_create_category():
     
     if not result:
         return{
-            "status":"erro",
+            "status":"error",
             "message":"No se pudo crear la categoria",
             "detail": result,
         },400
@@ -68,6 +68,29 @@ def process_delete_category(id_category):
     return{
         "status":"success",
         "message":f"ID {id_category} Eliminado exitosamente",
+        "detail": result,
+    }, 200
+
+def process_activate_category(id_category):
+    success, result = activate_category(id_category)
+    
+    if not success:
+        return{
+            "status":"error",
+            "message":"Error al Activar la categoria",
+            "detail": result,
+        }, 500
+    
+    if result == 0:
+        return{
+            "status":"not_found",
+            "message":"ID no encontrada",
+            "detail": result,
+        }, 404
+    
+    return{
+        "status":"success",
+        "message":f"ID {id_category} Activado exitosamente",
         "detail": result,
     }, 200
 
