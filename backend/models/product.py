@@ -24,3 +24,28 @@ def get_product_by_id(id_product):
         conn.close()
         return product
     return None
+
+
+def create_product(data):
+    conn = get_connection()
+    if conn:
+        cursor = conn.cursor()
+        sql = """
+            INSERT INTO product (name, description, price, stock, id_brand, id_type_product)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """
+        values = (
+            data["name"],
+            data["description"],
+            data["price"],
+            data["stock"],
+            data["id_brand"],
+            data["id_type_product"],
+        )
+        cursor.execute(sql, values)
+        conn.commit()
+        new_id = cursor.lastrowid
+        cursor.close()
+        conn.close()
+        return new_id
+    return None
