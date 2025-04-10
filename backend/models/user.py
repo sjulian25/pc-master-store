@@ -78,7 +78,6 @@ def get_login(email,password):
             return jsonify({'message': 'User not found'}), 404
         stored_hasd=user['user_password']
         salt=user['salt']
-
         raw_password=password+salt
         password_confirm=hashlib.sha256(raw_password.encode('utf-8')).hexdigest()
 
@@ -87,12 +86,31 @@ def get_login(email,password):
 
         return jsonify({'message': 'Invalid email or password'}), 401
         
-        
-
     except Exception as e:
         return jsonify({'message': f'Error: {str(e)}'}), 500
     
-    
+
+
+def update_user(user_id,data):
+    try:
+        cnn = get_connection()
+
+        with cnn.cursor() as cursor:
+            # actualizar
+            update_query="UPDATE users SET username=%s, email=%s WHERE id_users=%s AND is_active=1"
+            cursor.execute(update_query,(data['username'],data['email'],user_id))
+
+            if cursor.rowcount==0:
+                return jsonify({'message': 'User not found or no changes made'}), 404
+
+        cnn.commit()
+        cnn.close()
+        
+        return jsonify({'message':'User update successfully'}), 200
+    except Exception as e:
+        return jsonify({'message': f'Error: {str(e)}'}), 500
+
+
 #consultar todos los clientes
 def get_all_user():
     try:
