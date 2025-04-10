@@ -83,3 +83,4 @@ def category_exists(id_category):
         conn.close()
         return result is not None
     return False
+
