@@ -29,4 +29,23 @@ def register_user(data):
         return new_id
     return None
 
+#consultar un usuario por el email
+def get_user_by_email(email):
+    try:
+        cnn = get_connection()
+        if not cnn:
+            return None
+        
+        with cnn.cursor() as cursor:
+            search="SELECT id_users,username,email,last_login FROM users WHERE email = %s"
+            cursor.execute(search,(email,))
+            user = cursor.fetchone()
+            
+        cnn.close()
+        return user
+        
+    except Exception as e:
+        print(f'Errot searching user by email: {e}')
+        return None
+    
 

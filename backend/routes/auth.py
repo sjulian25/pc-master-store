@@ -1,5 +1,5 @@
-from flask import request,Blueprint
-from models.user import register_user
+from flask import request,Blueprint,jsonify
+from models.user import register_user,get_user_by_email
 
 
 auth_bp=Blueprint("auth",__name__)
@@ -18,7 +18,28 @@ def add_user():
         return {'message':'user register succesfuly','user_id':new_id},201
     else:
         return {'message':'user register failed'},500
+
+@auth_bp.route('/search/<string:email>', methods=['GET'])
+def search_email_user(email):
     
+    user=get_user_by_email(email)
+
+    if user:
+        user_data={
+            "id":user[0],
+            "name":user[1],
+            "email":user[2],
+            "last_login":user[3]
+        }
+        return jsonify(user_data), 200
+    else:
+        return jsonify({'message':'User not found'}), 404
+
+
+
+
+
+
     
 
 
