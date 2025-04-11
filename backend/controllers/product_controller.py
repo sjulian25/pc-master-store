@@ -5,7 +5,9 @@ from models.product import (
     get_product_by_id,
     create_product,
     update_product,
-    # delete_product, # TODO: falta este metodo en el modelo
+    delete_product,
+    get_inactive_products,
+    restore_product,
 )
 
 
@@ -52,3 +54,27 @@ def update_product_controller(id_product, data):
         return jsonify({"message": "Product updated successfully"}), 200
     else:
         return jsonify({"message": "Couldn't update the product"}), 500
+
+
+def delete_product_controller(id_product):
+    exising_product = get_product_by_id(id_product)
+    if not exising_product:
+        return jsonify({"message": "Product not found"}), 404
+
+    delete = delete_product(id_product)
+    if delete:
+        return jsonify({"message": "Product deleted successfully"}), 200
+    else:
+        return jsonify({"message": "Couldn't delete the product"}), 500
+
+
+def get_inactive_products_controller():
+    products = get_inactive_products()
+    return jsonify(products), 200
+
+
+def restore_product_controller(id_product):
+    restored = restore_product(id_product)
+    if restored:
+        return jsonify({"message": "Product restored"}), 200
+    return jsonify({"message": "Couldn't restore product"}), 404

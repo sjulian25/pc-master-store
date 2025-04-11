@@ -6,7 +6,7 @@ def get_all_products():
     conn = get_connection()
     if conn:
         cursor = conn.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute("SELECT * FROM product")
+        cursor.execute("SELECT * FROM product WHERE is_active = 1")
         products = cursor.fetchall()
         cursor.close()
         conn.close()
@@ -71,6 +71,66 @@ def update_product(id_product, data):
             id_product,
         )
         cursor.execute(sql, values)
+        conn.commit()
+        affected = cursor.rowcount
+        cursor.close()
+        conn.close()
+        return affected > 0
+    return False
+
+
+# This is a logic delete, it not truly remove a field, just chanche its state to false
+def delete_product(id_product):
+    conn = get_connection()
+    if conn:
+        cursor = conn.cursor()
+        sql = """ 
+            UPDATE product SET is_active = 0 WHERE id_product = %s
+        """
+        cursor.execute(sql, (id_product,))
+        conn.commit()
+        affected = cursor.rowcount
+        cursor.close()
+        conn.close()
+        return affected > 0
+    return False
+
+
+# * ONLY FOR ADMIN USERS
+def get_all_products(include_inactive=False):
+    conn = get_connection()
+    if conn:
+        cursor = conn.cursor(MySQLdb.cursors.DictCursor)
+        if include_inactive:
+            cursor.execute("SELECT * FROM product")
+        else:
+            cursor.execute("SELECT * FROM product WHERE is_active = 1")
+        products = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return products
+    return []
+
+
+def get_inactive_products():
+    conn = get_connection()
+    if conn:
+        cursor = conn.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT * FROM product WHERE is_active = 0")
+        products = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return products
+    return []
+
+
+def restore_product(id_product):
+    conn = get_connection()
+    if conn:
+        cursor = conn.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(
+            "UPDATE product SET is_active = 1 WHERE id_product = %s", (id_product,)
+        )
         conn.commit()
         affected = cursor.rowcount
         cursor.close()
