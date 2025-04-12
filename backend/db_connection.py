@@ -18,4 +18,6 @@ def get_connection():
     except MySQLdb.Error as err:
         print("Connection refuse: ", err)
         return None
-print('hola')
+
+
+print("hola")
