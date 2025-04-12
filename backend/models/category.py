@@ -4,11 +4,12 @@ import MySQLdb.cursors
 from db_connection import get_connection
 
 
-def get_all_category(id_category):
+def get_all_category():
     try:
         con = get_connection()
         cursor = con.cursor(cursorclass=MySQLdb.cursors.DictCursor)
-        cursor.execute("SELECT * FROM category WHERE id_category = %s", (id_category))
+        # cursor.execute("SELECT * FROM category WHERE id_category = %s", (id_category))
+        cursor.execute("SELECT * FROM category WHERE is_active = 1")
         categories = cursor.fetchall()
         con.close()
         return True, categories
