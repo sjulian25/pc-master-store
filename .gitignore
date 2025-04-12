@@ -285,6 +285,9 @@ psd
 thumb
 sketch
 
+# Folders
+/database
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
