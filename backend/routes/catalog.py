@@ -14,6 +14,15 @@ from controllers.brand_controller import (
     insert_brand_controller,
     activate_brand_controller,
 )
+from controllers.product_controller import (
+    get_all_products_controller,
+    get_product_by_id_controller,
+    create_product_controller,
+    update_product_controller,
+    delete_product_controller,
+    get_inactive_products_controller,
+    restore_product_controller,
+)
 
 # * CREATE BLUEPRINT
 catalog_bp = Blueprint("catalog", __name__)
@@ -55,7 +64,7 @@ def list_inactive_products():
 def restore_product(id_product):
     return restore_product_controller(id_product)
 
-  
+
 # * ROUTES FOR CATEGORY
 @catalog_bp.route("/category", methods=["GET"])
 def list_category():
