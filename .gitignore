@@ -1,3 +1,17 @@
+venv/
+__pycache__/
+*.pyc
+.env
+
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Entorno virtual de Python
+venv/
+env/
+
 ### Flask ###
 instance/*
 !instance/.gitignore
