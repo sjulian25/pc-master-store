@@ -14,7 +14,19 @@ def get_all_category():
         con.close()
         return True, categories
     except Exception as e:
-        return False, f"Error al obtner categorias {str(e)}"
+        return False, f"Error al obtener categorias {str(e)}"
+
+
+def get_category_by_id(id_category):
+    try:
+        con = get_connection()
+        cursor = con.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT * FROM category WHERE id_category = %s", (id_category,))
+        categories = cursor.fetchall()
+        con.close()
+        return True, categories
+    except Exception as e:
+        return False, f"Error al obtener categorias {str(e)}"
 
 
 def create_category():
