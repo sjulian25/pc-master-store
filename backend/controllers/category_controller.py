@@ -4,12 +4,12 @@ from models.category import (
     delete_category,
     update_category,
     activate_category,
+    get_category_by_id
 )
 
 
 def get_all_category_controller():
     success, result = get_all_category()
-
     if not success:
         return {
             "status": "error",
@@ -21,6 +21,29 @@ def get_all_category_controller():
         return {
             "status": "success",
             "message": "No hay categorias disponibles",
+            "detail": [],
+        }, 404
+
+    return {
+        "status": "success",
+        "message": "categorias obtenidad exitosamente",
+        "detail": result,
+        "count": len(result),
+    }, 200
+
+def get_category_by_id_controller(id_category):
+    success, result = get_category_by_id(id_category)
+    if not success:
+        return {
+            "status": "error",
+            "message": "Error al obtener categorias",
+            "detail": result,
+        }, 500
+
+    if not result:
+        return {
+            "status": "success",
+            "message": f"ID {id_category} No Existe",
             "detail": [],
         }, 200
 

@@ -5,6 +5,7 @@ from controllers.category_controller import (
     delete_category_controller,
     update_category_controller,
     activate_category_controller,
+    get_category_by_id_controller
 )
 from controllers.brand_controller import (
     get_brands_controller,
@@ -69,6 +70,12 @@ def restore_product(id_product):
 @catalog_bp.route("/category", methods=["GET"])
 def list_category():
     response, status_code = get_all_category_controller()
+    return jsonify(response), status_code
+
+
+@catalog_bp.route("/category/<int:id_category>", methods=["GET"])
+def list_category_by_id(id_category):
+    response, status_code = get_category_by_id_controller(id_category)
     return jsonify(response), status_code
 
 
