@@ -1,0 +1,170 @@
+swagger: "2.0"
+info:
+  title: "PC Master Store API"
+  description: "API Documentation for the PC Master Store application"
+  version: "1.0.0"
+host: "localhost:5000"
+basePath: "/"
+schemes:
+  - "http"
+
+paths:
+  /api/catalog/products:
+    get:
+      summary: Get all active products
+      tags:
+        - Products
+      responses:
+        "200":
+          description: List of active products
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Product"
+
+    post:
+      summary: Create a new product
+      tags:
+        - Products
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/NewProduct"
+      responses:
+        "201":
+          description: Product successfully created
+        "400":
+          description: Invalid product data
+
+  /api/catalog/products/{id_product}:
+    get:
+      summary: Get a product by ID
+      tags:
+        - Products
+      parameters:
+        - name: id_product
+          in: path
+          required: true
+          type: integer
+          description: ID of the product
+      responses:
+        "200":
+          description: Product found
+          schema:
+            $ref: "#/definitions/Product"
+        "404":
+          description: Product not found
+
+    put:
+      summary: Update a product by ID
+      tags:
+        - Products
+      parameters:
+        - name: id_product
+          in: path
+          required: true
+          type: integer
+          description: ID of the product
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/NewProduct"
+      responses:
+        "200":
+          description: Product updated successfully
+        "404":
+          description: Product not found
+
+    delete:
+      summary: Soft-delete a product by ID
+      tags:
+        - Products
+      parameters:
+        - name: id_product
+          in: path
+          required: true
+          type: integer
+          description: ID of the product to deactivate
+      responses:
+        "200":
+          description: Product deactivated
+        "404":
+          description: Product not found
+
+  /products/inactive:
+    get:
+      summary: Get all inactive (deleted) products
+      tags:
+        - Products
+      responses:
+        "200":
+          description: List of inactive products
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Product"
+
+  /products/{id_product}/restore:
+    patch:
+      summary: Restore a soft-deleted product
+      tags:
+        - Products
+      parameters:
+        - name: id_product
+          in: path
+          required: true
+          type: integer
+          description: ID of the product to restore
+      responses:
+        "200":
+          description: Product restored successfully
+        "404":
+          description: Product not found
+
+definitions:
+  Product:
+    type: object
+    properties:
+      id_product:
+        type: integer
+      name:
+        type: string
+      description:
+        type: string
+      price:
+        type: number
+        format: float
+      stock:
+        type: integer
+      id_brand:
+        type: integer
+      id_type_product:
+        type: integer
+      is_active:
+        type: boolean
+
+  NewProduct:
+    type: object
+    required:
+      - name
+      - price
+      - stock
+      - id_brand
+      - id_type_product
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      price:
+        type: number
+        format: float
+      stock:
+        type: integer
+      id_brand:
+        type: integer
+      id_type_product:
+        type: integer
