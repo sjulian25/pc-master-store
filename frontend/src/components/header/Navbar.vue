@@ -17,11 +17,18 @@
 </template>
 
 <script setup>
+import { getBrands } from '@/services/brandService';
 import Dropdown from './Dropdown.vue';
+import { onMounted, ref } from 'vue';
+
+const marcas = ref([]);
+
+onMounted(async () => {
+    marcas.value = await getBrands();
+})
 
 // TODO: Modificar para que traiga las marcas y categprías de la api
 const categorias = ['Mouse', 'Teclado', 'Fuentes']
-const marcas = ['Logitech', 'Razer', 'XPG', 'Corsair', 'Cooler Master', 'Asus', 'MSI', 'Gigabyte']
 
 function handleCategorySelect(item){
     console.log('Seleccionaste: ', item);
