@@ -4,10 +4,9 @@ import Catalog from './pages/Catalog.vue'
 </script>
 
 <template>
-  <div>
     <RouterView />
-  </div>
 </template>
 
 <style scoped>
+
 </style>

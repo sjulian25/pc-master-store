@@ -1,12 +1,24 @@
 import { createRouter, createWebHistory } from "vue-router";
-// import Home from "@/pages/Home.vue";
+import Home from "@/pages/Home.vue";
+import Default from "@/components/layout/Default.vue";
 // import Catalog from "@/pages/Catalog.vue";
 // import ProductPage from "@/pages/ProductPage.vue";
 // import Login from "@/pages/Login.vue";
 // import Register from "@/pages/Register.vue";
 
 const routes = [
-    // { path: '/', component: Home },
+    {
+        path: '/',
+        component: Default,
+        children: [
+            { 
+                path: '/',
+                name: 'Home',
+                component: Home 
+            },
+
+        ]
+    },
     // { path: '/catalog', component: Catalog },
     // { path: '/product', component: ProductPage },
     // { path: '/login', component: Login },
