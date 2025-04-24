@@ -19,6 +19,12 @@ const routes = [
 
         ]
     },
+    {
+        path: '/product/:id',  // :id es un parámetro dinámico para el ID del producto
+        name: 'ProductDetail',
+        component: ProductDetail,  // El componente que renderiza los detalles del producto
+        props: true  // Pasar el parámetro `id` como prop al componente
+    },
     // { path: '/catalog', component: Catalog },
     // { path: '/product', component: ProductPage },
     // { path: '/login', component: Login },
