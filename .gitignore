@@ -1,3 +1,6 @@
+# Ignorar archivos generados por Vite
+frontend/.vite/deps/
+frontend/.vite/output/
 # My Folders
 /database
 
