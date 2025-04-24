@@ -1,0 +1,41 @@
+.dropdown-wrapper {
+position: relative;
+cursor: pointer;
+}
+
+.dropdown-button {
+background-color: transparent;
+border: none;
+padding: 10px;
+color: white;
+display: flex;
+position: relative;
+gap: 5px;
+cursor: pointer;
+border-radius: 4px;
+transition: all 0.2s ease;
+font-family: 'Courier New', Courier, monospace;
+font-size: large;
+}
+
+.dropdown-menu {
+position: absolute;
+top: 100%;
+left: 0;
+background: #393E46;
+color: #EEEEEE;
+border-radius: 10px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+padding: 0.5rem 1rem;
+min-width: 150px;
+z-index: 10;
+}
+
+.dropdown-menu p {
+margin: 0.5rem 0;
+cursor: pointer;
+}
+
+.dropdown-menu p:hover {
+color: #FFD369;
+}

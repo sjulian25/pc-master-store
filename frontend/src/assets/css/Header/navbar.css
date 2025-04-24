@@ -1,0 +1,51 @@
+/* From Uiverse.io by ErzenXz */ 
+:root {
+    --ch-c-black: #222831;
+    --ch-c-gray-dark: #393E46;
+    --ch-c-yellow: #FFD369;
+    --ch-c-white: #EEEEEE;
+}
+
+.input {
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    background-color: var(--ch-c-black);
+    justify-content: center;
+    border-radius: 5px;
+    gap: 10rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    align-items: center;
+}
+
+.value {
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    color: white;
+    display: flex;
+    position: relative;
+    gap: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: large;
+}
+
+.value:not(:active):hover,
+.value:focus {
+    background-color: #21262c;
+}
+
+.value:focus,
+.value:active {
+    background-color: var(--ch-c-gray-dark);
+    outline: none;
+}
+
+.value:focus::before,
+.value:active::before {
+    opacity: 1;
+}
