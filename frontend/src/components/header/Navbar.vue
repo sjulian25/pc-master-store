@@ -17,6 +17,7 @@
 </template>
 
 <script setup>
+import { getCategory } from '@/services/categoryService'
 import { getBrands } from '@/services/brandService';
 import Dropdown from './Dropdown.vue';
 import { onMounted, ref } from 'vue';
@@ -27,8 +28,14 @@ onMounted(async () => {
     marcas.value = await getBrands();
 })
 
-// TODO: Modificar para que traiga las marcas y categprías de la api
-const categorias = ['Mouse', 'Teclado', 'Fuentes']
+const categorias = ref([]);
+
+onMounted(async () => {
+    categorias.value = await getCategory();
+})
+
+
+
 
 function handleCategorySelect(item){
     console.log('Seleccionaste: ', item);
