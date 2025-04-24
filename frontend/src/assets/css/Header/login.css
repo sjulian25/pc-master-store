@@ -90,6 +90,7 @@
 }
 
 .popup-window {
+    z-index: 10000;
     transform: scale(var(--nav-default-scale));
     visibility: hidden;
     opacity: 0;

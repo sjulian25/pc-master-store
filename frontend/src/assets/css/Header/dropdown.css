@@ -28,7 +28,7 @@ border-radius: 10px;
 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 padding: 0.5rem 1rem;
 min-width: 150px;
-z-index: 10;
+z-index: 100000;
 }
 
 .dropdown-menu p {

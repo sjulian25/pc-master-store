@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 
 const items = ref([
     { titulo: 'Imagen 1', imagen: '/src/assets/img/home/carousel/publi10.png' },
@@ -45,10 +45,19 @@ const anterior = () => {
 onMounted(() => {
     const contenedor = document.querySelector('.carrusel-contenedor');
     anchoItem.value = contenedor.offsetWidth;
-    window.addEventListener('resize', () => {
+    // Define la funcion para poder removerla despues
+    const resizeHandler = () => {
         anchoItem.value = contenedor.offsetWidth;
+    };
+
+    window.addEventListener('resize',resizeHandler);
+    
+    // Limpia el event Listener al desmontar
+    onMounted(() => {
+        window.removeEventListener('resize', resizeHandler)
+    })
     });
-});
+
 </script>
 
 <style scoped>
@@ -64,6 +73,7 @@ onMounted(() => {
     height: 400px;
     border-radius: 0;       /* Opcional: elimina el borde redondeado para pantalla completa */
     box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    z-index: 1;
 }
 
 .carrusel-contenedor {
@@ -88,8 +98,8 @@ onMounted(() => {
     height: 100%;
     object-fit: cover;
     display: block;
-
 }
+
 
 .boton-anterior,
 .boton-siguiente {
