@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/pages/Home.vue";
 import Default from "@/components/layout/Default.vue";
+import ProductDetail from "@/components/product/ProductDetail.vue";
 // import Catalog from "@/pages/Catalog.vue";
 // import ProductPage from "@/pages/ProductPage.vue";
 // import Login from "@/pages/Login.vue";
@@ -16,15 +17,17 @@ const routes = [
                 name: 'Home',
                 component: Home 
             },
+            {
+                path: '/product/:id',
+                name: 'ProductDetail',
+                component: ProductDetail,
+                props:true
+                
+            },
 
         ]
     },
-    {
-        path: '/product/:id',  // :id es un parámetro dinámico para el ID del producto
-        name: 'ProductDetail',
-        component: ProductDetail,  // El componente que renderiza los detalles del producto
-        props: true  // Pasar el parámetro `id` como prop al componente
-    },
+    
     // { path: '/catalog', component: Catalog },
     // { path: '/product', component: ProductPage },
     // { path: '/login', component: Login },

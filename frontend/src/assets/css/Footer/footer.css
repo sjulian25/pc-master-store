@@ -7,8 +7,6 @@ footer {
     align-items: flex-start;
     gap: 30px;
     margin: 0 auto;
-    bottom: 0;
-    position: absolute;
     width: 100%;
 }
 

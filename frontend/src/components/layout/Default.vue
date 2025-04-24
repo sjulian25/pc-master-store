@@ -1,7 +1,7 @@
 <template>
     <div class="default-layout">
         <AppHeader />
-        <main class="main-content"><slot/></main>
+        <main class="main-content"><router-view></router-view></main>
         <AppFooter />
     </div>
 </template>
@@ -15,7 +15,7 @@ import AppFooter from '@/components/layout/AppFooter.vue'
 .default-layout {
     display: flex;
     flex-direction: column;
-    min-width: 100vh;
+    min-height: 100vh;
 }
 
 .main-content {

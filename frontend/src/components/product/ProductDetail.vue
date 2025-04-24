@@ -1,77 +1,66 @@
 <template>
 <div class="product-detail">
-    <img src="../../assets/img/products/mouse_img.webp" alt="Imagen del producto" class="product-image" />
-    <div class="product-info">
-    <h1>{{ product.name }}</h1>
-    <p class="description">{{ product.description }}</p>
-    <p class="price">$ {{ product.price }}</p>
-    <p class="stock">Stock disponible: {{ product.stock }}</p>
-    <p class="brand">Marca ID: {{ product.id_brand }}</p> <!-- o cambia por el nombre si lo tienes -->
-    <p class="category">Tipo de producto ID: {{ product.id_type_product }}</p>
-    <p class="status" v-if="!product.is_active">Este producto no está disponible actualmente</p>
-    <button class="buy-button" :disabled="!product.is_active || product.stock === 0">
-        Agregar al carrito
-    </button>
-    </div>
+    <img :src="product.image || '/img/product/imagedefault.webp'" />
+    <h2>{{ product.name }}</h2>
+    <p>{{ product.description }}</p>
+    <span class="price">${{ product.price }}</span>
+    <p>Categoria: {{ product.id_type_product }}</p>
+    <p>En Stock: {{ product.stock }}</p>
+    <p>Marca: {{ brand.name || 'Cargando...' }}</p>  <!-- Aquí mostramos la marca -->
+    <button @click="addToCart">Añadir al carrito</button>
 </div>
 </template>
-
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import getProductById from '@/services/productService'
-import getBrandById from '@/services/brandService'
+import { getProductById} from '@/services/productService'
+import { getBrandsId } from '@/services/brandService' // Asegúrate de tener estos servicios
 
-const product = ref({})
-const brand = ref({})  // Para almacenar los datos de la marca
 const route = useRoute()
+const product = ref({})
+const brand = ref({})
 
-onMounted(async () => {
-// Obtener el ID del producto desde la URL
-const productId = route.params.id
+// Función para obtener los detalles del producto
+const fetchProductDetail = async (id) => {
+try {
+    const productData = await getProductById(id)
+    product.value = productData
+    // Ahora obtenemos la marca con el id de la marca
+    const brandName = await getBrandsId(productData.id_brand); // Obtener solo el nombre de la marca
+        console.log(brandName);  // Esto debería mostrar el nombre de la marca
+        brand.value = { name: brandName };  // Guardamos el nombre de la marca en 'brand'
+    } catch (error) {
+        console.error('Error al obtener los detalles del producto:', error);
+    }
+}
 
-// Obtener los detalles del producto usando el servicio
-const productResponse = await getProductById(productId)
-product.value = productResponse.data
-
-// Obtener la marca usando el id_brand del producto
-const brandResponse = await getBrandById(product.value.id_brand)
-brand.value = brandResponse
+onMounted(() => {
+const productId = route.params.id // Obtenemos el id del producto desde la ruta
+fetchProductDetail(productId) // Llamamos a la función para obtener el detalle del producto
 })
+
+const addToCart = () => {
+console.log(`${product.value.name} añadido al carrito`)
+}
 </script>
 
-  
-  <style scoped>
-  .product-detail {
-    display: flex;
-    padding: 2rem;
-    gap: 2rem;
-  }
-  .product-image {
-    width: 300px;
-    border-radius: 12px;
-  }
-  .product-info {
-    flex: 1;
-  }
-  .description {
-    color: #666;
-  }
-  .price {
-    font-weight: bold;
-    font-size: 1.2rem;
-  }
-  .buy-button {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    background-color: #FFD369;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  .buy-button:hover {
-    background-color: #ffcb2b;
-  }
-  </style>
-  
+<style scoped>
+.product-detail {
+width: 300px;
+padding: 20px;
+border: 1px solid #ccc;
+margin: 20px;
+text-align: center;
+}
+
+.product-image {
+max-width: 100%;
+height: auto;
+}
+
+.price {
+font-weight: bold;
+color: green;
+}
+</style>
