@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-from flask import Blueprint,Flask,jsonify
-=======
 from flask import Flask, jsonify, request
 import MySQLdb
 import MySQLdb.cursors
@@ -94,4 +91,3 @@ def category_exists(id_category):
         conn.close()
         return result is not None
     return False
->>>>>>> 8d06e29d0fdfc1a46b5e0ca8e451c622135356f6
