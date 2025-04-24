@@ -1,13 +1,20 @@
 <template>
 <div class="product-detail">
-    <img :src="product.image || '/img/product/imagedefault.webp'" />
-    <h2>{{ product.name }}</h2>
-    <p>{{ product.description }}</p>
-    <span class="price">${{ product.price }}</span>
-    <p>Categoria: {{ product.id_type_product }}</p>
-    <p>En Stock: {{ product.stock }}</p>
-    <p>Marca: {{ brand.name || 'Cargando...' }}</p>  <!-- Aquí mostramos la marca -->
+    <div class="left-column">
+    <img :src="product.image || '/img/product/imagedefault.webp'" alt="Imagen del producto" />
+    </div>
+    <div class="right-column">
+    <p>{{ product.name }}</p>
+    <p><strong>Categoría:</strong> {{ product.id_type_product }}</p>
+    <p><strong>Marca:</strong> {{ brand.name || 'Cargando...' }}</p>
+    <p><strong>En Stock:</strong> {{ product.stock }}</p>
+    <p class="price">${{ product.price }}</p>
     <button @click="addToCart">Añadir al carrito</button>
+    </div>
+</div>
+<div class="description-box">
+    <h3>Descripción del producto</h3>
+    <p>{{ product.description }}</p>
 </div>
 </template>
 
@@ -47,20 +54,77 @@ console.log(`${product.value.name} añadido al carrito`)
 
 <style scoped>
 .product-detail {
-width: 300px;
-padding: 20px;
-border: 1px solid #ccc;
-margin: 20px;
-text-align: center;
+display: flex;
+gap: 2rem;
+max-width: 1000px;
+margin: 2rem auto;
+padding: 1rem;
+background-color: var(--ch-c-gray-dark);
+border-radius: 12px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.product-image {
-max-width: 100%;
-height: auto;
+.left-column {
+flex: 1;
+}
+
+.left-column img {
+width: 100%;
+border-radius: 12px;
+object-fit: cover;
+}
+
+.right-column {
+flex: 1;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+gap: 1rem;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.right-column p {
+margin: 0;
+font-size: 1rem;
 }
 
 .price {
+font-size: 1rem;
+color: var(--ch-c-yellow);
 font-weight: bold;
-color: green;
+}
+
+button {
+background-color: var(--ch-c-yellow);
+color: #222831;
+border: none;
+padding: 0.8rem;
+font-size: 1.2rem;
+border-radius: 8px;
+cursor: pointer;
+transition: 0.3s;
+}
+
+button:hover {
+background-color: #e0b94c;
+}
+
+.description-box {
+max-width: 1000px;
+margin: 1rem auto;
+padding: 1.5rem;
+background-color: var(--ch-c-gray-dark);
+border-radius: 12px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.description-box h3 {
+margin-bottom: 0.5rem;
+}
+
+.description-box p {
+color: var(--ch-c-black);
+line-height: 1.6;
+font-weight: bold;
 }
 </style>

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/pages/Home.vue";
 import Default from "@/components/layout/Default.vue";
 import ProductDetail from "@/components/product/ProductDetail.vue";
+import ProductPage from "@/pages/ProductPage.vue";
 // import Catalog from "@/pages/Catalog.vue";
 // import ProductPage from "@/pages/ProductPage.vue";
 // import Login from "@/pages/Login.vue";
@@ -18,6 +19,11 @@ const routes = [
                 component: Home 
             },
             {
+                path: '/ProductPage',
+                name: 'ProductPage',
+                component: ProductPage  
+            },
+            {
                 path: '/product/:id',
                 name: 'ProductDetail',
                 component: ProductDetail,
@@ -27,6 +33,7 @@ const routes = [
 
         ]
     },
+    
     
     // { path: '/catalog', component: Catalog },
     // { path: '/product', component: ProductPage },
