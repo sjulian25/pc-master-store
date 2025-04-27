@@ -7,7 +7,13 @@
     <!-- Wrapper horizontal para sidebar + productos -->
     <div class="content-wrapper">
         <!-- Sidebar izquierda -->
-        <filtersidebar @filter-by-category="handleFilter"/>
+        <div class="filter-sidebar">
+        <!-- Filtro de categorías -->
+        <filtersidebar @filter-by-category="handleFilter" />
+        
+        <!-- Filtro de precio debajo del filtro de categorías -->
+        <filterprice @filter-by-price="handlePriceFilter" />
+        </div>
 
         <!-- Contenido de productos -->
         <div class="product-list">
@@ -26,6 +32,7 @@
 </v-main>
 </template>
 
+
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
@@ -33,6 +40,7 @@ import ProductCard from '@/components/product/ProductCard.vue'
 import { getAllProducts } from '@/services/productService'
 import Breadcrumb from '@/components/layout/Breadcrumb.vue'
 import filtersidebar from '@/components/product/filtersidebar.vue'
+import filterprice from '@/components/product/filterprice.vue'
 
 const products = ref([])
 const router = useRouter()
@@ -57,9 +65,31 @@ selectedCategoryId.value = categoryId || null
 
 // Computed que devuelve los productos filtrados
 const filteredProduct = computed(() => {
-if (!selectedCategoryId.value) return products.value
-return products.value.filter(p => p.categoryId === selectedCategoryId.value)
+let result = products.value
+
+// Filtrar por categoría
+if (selectedCategoryId.value) {
+result = result.filter(p => p.categoryId === selectedCategoryId.value)
+}
+
+// Filtrar por precio
+if (selectedPriceRange.value.min !== null) {
+result = result.filter(p => p.price >= selectedPriceRange.value.min)
+}
+
+if (selectedPriceRange.value.max !== null) {
+result = result.filter(p => p.price <= selectedPriceRange.value.max)
+}
+
+return result
 })
+
+const selectedPriceRange = ref({ min: null, max: null })
+
+function handlePriceFilter(range) {
+selectedPriceRange.value = range
+}
+
 </script>
 
 <style scoped>
@@ -73,13 +103,18 @@ padding: 20px 20px 20px 0;
 .breadcrumb {
 margin-bottom: 1rem;
 }
+
+/* Wrapper que usa flexbox para alinear sidebar y productos */
 .content-wrapper {
 display: flex;
 gap: 20px;
 }
 
-/* Sidebar ocupa ancho fijo */
+/* Sidebar (filtros de categoría y precio) */
 .filter-sidebar {
+display: flex;
+flex-direction: column;
+gap: 20px; /* Espacio entre los filtros */
 width: 250px;
 flex-shrink: 0;
 }
