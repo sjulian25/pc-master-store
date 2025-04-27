@@ -7,14 +7,14 @@
     <!-- Wrapper horizontal para sidebar + productos -->
     <div class="content-wrapper">
         <!-- Sidebar izquierda -->
-        <filtersidebar />
+        <filtersidebar @filter-by-category="handleFilter"/>
 
         <!-- Contenido de productos -->
         <div class="product-list">
         <h1>Productos</h1>
         <div class="products-grid">
             <ProductCard
-            v-for="product in products"
+            v-for="product in filteredProduct"
             :key="product.id_product"
             :product="product"
             @click="goToProductDetail(product.id_product)"
@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import ProductCard from '@/components/product/ProductCard.vue'
 import { getAllProducts } from '@/services/productService'
@@ -49,21 +49,30 @@ try {
     console.error('Error al obtener productos:', error)
 }
 })
+const selectedCategoryId = ref(null)
+// Función que se activa cuando FilterSidebar emite un filtro
+function handleFilter(categoryId) {
+selectedCategoryId.value = categoryId || null
+}
+
+// Computed que devuelve los productos filtrados
+const filteredProduct = computed(() => {
+if (!selectedCategoryId.value) return products.value
+return products.value.filter(p => p.categoryId === selectedCategoryId.value)
+})
 </script>
 
 <style scoped>
 .product-page {
 max-width: 1400px;
 margin: 0 auto;
-padding: 20px 20px 20px 0;;
+padding: 20px 20px 20px 0;
 }
 
 /* Breadcrumb separado del contenido */
 .breadcrumb {
 margin-bottom: 1rem;
 }
-
-/* Flex horizontal entre sidebar y productos */
 .content-wrapper {
 display: flex;
 gap: 20px;
