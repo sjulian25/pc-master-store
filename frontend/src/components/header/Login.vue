@@ -54,7 +54,7 @@
                     ></path>
                 </svg>
                 <router-link to="/register">
-                <span>Sign Up</span>
+                <span >Sign Up</span>
                 </router-link>
                
                 </button>

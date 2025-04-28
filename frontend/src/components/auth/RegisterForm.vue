@@ -63,7 +63,7 @@
         </div>
       </div>
 
-    <button id="btn-registrar" type="submit" :disabled="isLoading">Registrar</button>
+    <button id="btn-registrar" type="submit" :disabled="isLoading" >Registrar</button>
 
     <!-- Mensajes -->
     <p v-if="successMessage" class="success">{{ successMessage }}</p>
@@ -75,6 +75,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { registerUser } from '@/services/authService'
+import { useRouter } from 'vue-router'
 
 const form = ref({
   username: '',
@@ -83,6 +84,7 @@ const form = ref({
   email: '',
 })
 
+const router = useRouter()
 const passwordError = ref('')
 const isLoading = ref(false)
 const successMessage = ref('')
@@ -139,7 +141,11 @@ const handleSubmit = async () => {
       user_password2: '', 
       email: '' 
     }
-    setTimeout(() => (successMessage.value = ''), 3000)
+    setTimeout(() => {
+      successMessage.value = ''
+      router.push('/')  // 👈 te envía a la página principal (home)
+    }, 1000)
+    alert('Registro exitoso')
   } catch (error) {
     successMessage.value = ''
     errorMessage.value = error.response?.data?.message || 'Error al registrar usuario'
