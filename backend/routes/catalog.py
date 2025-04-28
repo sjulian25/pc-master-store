@@ -23,6 +23,7 @@ from controllers.product_controller import (
     get_inactive_products_controller,
     restore_product_controller,
 )
+from controllers.type_products_controller import get_all_type_of_products_controller
 
 # * CREATE BLUEPRINT
 catalog_bp = Blueprint("catalog", __name__)
@@ -143,3 +144,9 @@ def get_products_by_brand(id_brand):
         jsonify(response),
         status_code,
     )  # Llama al controlador para obtener productos por marca
+
+
+# * ROUTES FOR TYPE PRODUCTS
+@catalog_bp.route("/type_products", methods=["GET"])
+def list_type_products():
+    return get_all_type_of_products_controller()

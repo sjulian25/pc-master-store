@@ -3,6 +3,7 @@ frontend/.vite/deps/
 frontend/.vite/output/
 # My Folders
 /database
+.prettierrc
 
 # venvs
 venv/
