@@ -68,7 +68,7 @@ def get_user_by_id(id_users):
 #login de usuario
 def get_login(email,password):
     try:
-        cnn=get_connection()
+        cnn=get_connection() 
 
         with cnn.cursor(MySQLdb.cursors.DictCursor) as cursor:
             cursor.execute("SELECT user_password,salt FROM users WHERE email = %s AND is_active=1",(email,))
