@@ -161,6 +161,7 @@
     border: none;
     border-bottom: var(--underline-border-width) solid
     var(--underline-border-color);
+    text-decoration: none;
 }
 
 /* actions */
@@ -206,4 +207,8 @@
     transform: scale(var(--nav-active-scale));
     visibility: visible;
     opacity: 1;
+}
+span{
+    text-decoration: none;
+    color: var(--ch-c-white);
 }
