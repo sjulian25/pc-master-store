@@ -5,8 +5,8 @@ import ProductDetail from "@/components/product/ProductDetail.vue";
 import ProductPage from "@/pages/ProductPage.vue";
 // import Catalog from "@/pages/Catalog.vue";
 // import ProductPage from "@/pages/ProductPage.vue";
-// import Login from "@/pages/Login.vue";
-// import Register from "@/pages/Register.vue";
+import Login from "@/pages/Login.vue";
+import Register from "@/pages/Register.vue";
 
 const routes = [
     {
@@ -37,8 +37,14 @@ const routes = [
     
     // { path: '/catalog', component: Catalog },
     // { path: '/product', component: ProductPage },
-    // { path: '/login', component: Login },
-    // { path: '/register', component: Register },
+    { 
+        path: '/login', 
+        name: 'Login',
+        component: Login },
+    { 
+        path: '/register', 
+        name: 'Register',
+        component: Register },
 ];
 
 const router = createRouter({
