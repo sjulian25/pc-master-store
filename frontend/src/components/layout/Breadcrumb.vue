@@ -2,7 +2,7 @@
 <div class="breadcrumb-container">
     <div class="breadcrumb">
     <span @click="goTo('/')">Inicio</span> &gt;
-    <span>Catálogo</span>
+    <span @click="goTo('/ProductPage')">Catálogo</span> 
     </div>
 </div>
 </template>
