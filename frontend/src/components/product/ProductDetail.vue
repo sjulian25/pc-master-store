@@ -8,7 +8,7 @@
     <p><strong>Categoría:</strong> {{ product.id_type_product }}</p>
     <p><strong>Marca:</strong> {{ brand.name || 'Cargando...' }}</p>
     <p><strong>En Stock:</strong> {{ product.stock }}</p>
-    <p class="price">${{ product.price }}</p>
+    <p class="price">{{ formatoCOP(product.price) }}</p>
     <button @click="addToCart">Añadir al carrito</button>
     </div>
 </div>
@@ -49,6 +49,13 @@ fetchProductDetail(productId) // Llamamos a la función para obtener el detalle 
 
 const addToCart = () => {
 console.log(`${product.value.name} añadido al carrito`)
+}
+function formatoCOP(valor) {
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 0
+  }).format(valor)
 }
 </script>
 

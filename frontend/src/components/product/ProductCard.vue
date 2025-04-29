@@ -53,6 +53,6 @@ height: auto;
 
 .price {
 font-weight: bold;
-color: green;
+color: var(--ch-c-yellow);
 }
 </style>

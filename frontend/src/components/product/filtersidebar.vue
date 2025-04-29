@@ -25,20 +25,23 @@
 </template>
     
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { getAllTypeProduct } from '@/services/typeProductService' 
 const emit = defineEmits(['filterByCategory'])  // Declaras el evento
 
-const categories = ref([
-{ id: 1, name: 'Mouse' },
-{ id: 2, name: 'Teclado' },
-{ id: 3, name: 'Pantalla' },
-{ id: 4, name: 'Bafle' },
-{ id: 5, name: 'Tarjeta Gráfica' },
-{ id: 6, name: 'Procesador' },
-{ id: 7, name: 'Fuente de poder' },
-{ id: 8, name: 'Memoria RAM' },
-{ id: 9, name: 'Placa base' }
-])
+const categories = ref([])
+onMounted(async () => {
+  try {
+    const typeProducts = await getAllTypeProduct();
+    console.log('Tipos de producto:', typeProducts)
+    categories.value = typeProducts.map(tp => ({
+      id: tp[0],    // id_type_product
+      name: tp[2]   // name
+    }))
+  } catch (error) {
+    console.error('Error al cargar los tipos de producto:', error);
+  }
+});
 
 // categoría seleccionada
 const selectedCategory = ref(null)

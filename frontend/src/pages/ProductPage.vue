@@ -69,7 +69,7 @@ let result = products.value
 
 // Filtrar por categoría
 if (selectedCategoryId.value) {
-result = result.filter(p => p.categoryId === selectedCategoryId.value)
+result = result.filter(p => p.id_type_product === selectedCategoryId.value)
 }
 
 // Filtrar por precio
