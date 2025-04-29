@@ -1,9 +1,9 @@
 <template>
     <div class="default-layout">
-            <AppHeader />
-        </header> <main class="main-content"><RouterView></RouterView></main>
-            <AppFooter />
-      </div>
+        <AppHeader />
+        <main class="main-content"><RouterView></RouterView></main>
+        <AppFooter />
+    </div>
 </template>
 
 <script setup>

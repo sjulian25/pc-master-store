@@ -16,9 +16,9 @@ def add_user():
     new_id=register_user(data)
     #si se ha podido registrar el usuario, el codigo es el 201
     if new_id:
-        return {'message':'user resgister succesfuly','user_id':'new_id'}, 201
+        return jsonify ({'message':'user resgister succesfuly','user_id':'new_id'}), 201
     else:
-        return {'message':'user register failed'}, 500
+        return jsonify ({'message':'user register failed'}), 500
 
 @auth_bp.route('/search/<string:email>', methods=['GET'])
 def search_email_user(email):
@@ -57,7 +57,7 @@ def login_user():
     user_email=data.get('email')
     user_password=data.get('user_password')
     if not user_email or not user_password:
-        return ({'message':'email and password are requered'}), 400
+        return jsonify({'message':'email and password are requered'}), 400
 
     result, status_code = get_login(user_email, user_password)
     return result, status_code

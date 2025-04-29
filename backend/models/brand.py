@@ -9,7 +9,7 @@ def brand_exists(id_brand):
         cursor = conn.cursor()
         cursor.execute(
             "SELECT id_brand FROM brand WHERE id_brand = %s",
-            (id_brand),
+            (id_brand,),
         )
         result = cursor.fetchone()
         cursor.close()

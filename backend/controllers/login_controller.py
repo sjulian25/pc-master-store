@@ -15,7 +15,7 @@ def register_user_controller(data):
     # Comprobar si ya existe el email
     existing_user = get_user_by_email(data['email'])
     if existing_user:
-        return {'message': 'Email already registered'}, 409
+        return jsonify({'message': 'Email already registered'}), 409
 
     try:
         new_user_id = register_user(data)
@@ -24,14 +24,14 @@ def register_user_controller(data):
             'user_id': new_user_id
         }, 201
     except Exception as e:
-        return {'message': f'Error registering user: {str(e)}'}, 500
+        return jsonify({'message': f'Error registering user: {str(e)}'}), 500
     
 # Controlador de login de usuario
 def login_user_controller(email, password):
     from backend.models.user import get_login  # se importa aquí para evitar conflicto circular
 
     if not email or not password:
-        return {'message': 'Email and password are required'}, 400
+        return jsonify({'message': 'Email and password are required'}), 400
 
     return get_login(email, password)
 
@@ -54,6 +54,6 @@ def get_user_by_id_controller(user_id):
 # Controlador para actualizar usuario
 def update_user_controller(user_id, data):
     if 'username' not in data or 'email' not in data:
-        return {'message': 'Missing required fields'}, 400
+        return jsonify({'message': 'Missing required fields'}), 400
 
     return update_user(user_id, data)
