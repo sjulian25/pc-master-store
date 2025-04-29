@@ -1,9 +1,9 @@
 <template>
 <div class="product-card" @click="handleClick">
-    <img :src="product.imageUrl" :alt="product.name" class="product-image" />
+    <img :src="product.image" :alt="product.name" class="product-image" />
     <h3>{{ product.name }}</h3>
     <p>{{ product.description }}</p>
-    <span class="price">${{ product.price }}</span>
+    <span class="price">{{ formatoCOP(product.price) }}</span>
 </div>
 </template>
 
@@ -22,6 +22,14 @@ const emit = defineEmits()
 // Emitir un evento de clic hacia el componente padre
 const handleClick = () => {
 emit('click', props.product.id_product) // Emitimos el id del producto
+}
+// Función para formatear el precio en pesos colombianos
+function formatoCOP(valor) {
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 0
+  }).format(valor)
 }
 </script>
 
@@ -45,6 +53,6 @@ height: auto;
 
 .price {
 font-weight: bold;
-color: green;
+color: var(--ch-c-yellow);
 }
 </style>
