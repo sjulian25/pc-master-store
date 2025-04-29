@@ -9,7 +9,7 @@
     <p><strong>Marca:</strong> {{ brand.name || 'Cargando...' }}</p>
     <p><strong>En Stock:</strong> {{ product.stock }}</p>
     <p class="price">{{ formatoCOP(product.price) }}</p>
-    <button @click="addToCart">Añadir al carrito</button>
+    <button @click="addToCart">Comunicarte con el vendedor</button>
     </div>
 </div>
 <div class="description-box">

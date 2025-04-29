@@ -17,7 +17,7 @@
 
         <!-- Contenido de productos -->
         <div class="product-list">
-        <h1>Productos</h1>
+        <h1 class="title">Productos</h1>
         <div class="products-grid">
             <ProductCard
             v-for="product in filteredProduct"
@@ -86,13 +86,23 @@ return result
 
 const selectedPriceRange = ref({ min: null, max: null })
 
+// Función para manejar el evento del filtro de precio
 function handlePriceFilter(range) {
-selectedPriceRange.value = range
+  if (range.min === null && range.max === null) {
+    // Si los valores de min y max son null, significa que se ha limpiado el filtro de precio
+    selectedPriceRange.value = { min: null, max: null }  // Esto restablece el filtro
+  } else {
+    // Si se reciben valores válidos, aplicamos el filtro
+    selectedPriceRange.value = range
+  }
 }
 
 </script>
 
 <style scoped>
+.title {
+margin-bottom: 20px;
+}
 .product-page {
 max-width: 1400px;
 margin: 0 auto;

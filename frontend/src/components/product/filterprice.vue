@@ -18,6 +18,8 @@
 
     <!-- Botón para aplicar el filtro, centrado -->
     <button @click="emitFilter">Aplicar filtro</button>
+    <!-- Botón para limpiar el filtro -->
+    <button @click="clearFilter">Limpiar filtro</button>
 </div>
 </template>
 
@@ -31,6 +33,14 @@ const emit = defineEmits(['filter-by-price'])
 
 function emitFilter() {
 emit('filter-by-price', { min: min.value, max: max.value })
+}
+function clearFilter() {
+  // Limpiar los valores de los inputs
+  min.value = null
+  max.value = null
+  
+  // Emitir un evento con valores nulos para borrar el filtro
+  emit('filter-by-price', { min: null, max: null })
 }
 </script>
 
