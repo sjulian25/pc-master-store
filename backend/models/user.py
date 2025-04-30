@@ -142,4 +142,5 @@ def get_all_user():
 
     except Exception as e:
         print(f"Error searching users: {e}")
+
         return None

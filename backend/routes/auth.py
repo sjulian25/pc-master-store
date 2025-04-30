@@ -116,3 +116,4 @@ def search_all_user():
         return jsonify(users), 200
     else:
         return jsonify({"message": "Users not found"}), 404
+
