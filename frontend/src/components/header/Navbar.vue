@@ -1,10 +1,14 @@
 <template>
     <div class="input">
         <button class="value">
-            Inicio
+        <router-link to="/" class="value">
+        Inicio
+        </router-link>
         </button>
         <button class="value">
-            Tienda
+        <router-link to="/ProductPage" class="value">
+        Tienda
+        </router-link>
         </button>
         <button class="value">
             <Dropdown label="Categoria" :items="categorias" @select="handleCategorySelect"/>

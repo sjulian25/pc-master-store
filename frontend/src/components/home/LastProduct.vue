@@ -2,7 +2,6 @@
     <div class="productos-recientes">
         <h2>Productos Recientes</h2>
         <div class="productos-lista">
-
             <ProductCard
                 v-for="producto in productos"
                 :key="producto.id_product"
@@ -32,11 +31,11 @@ const fetchProductos = async () => {
 onMounted(fetchProductos)
 const goToProductDetail = (id) => {
   console.log('ID recibido:', id)  // Asegúrate de que esto imprime el ID correcto
-    if (id) {
+  if (id) {
     router.push({ name: 'ProductDetail', params: { id } })
-    } else {
+  } else {
     console.error("El ID del producto no se ha recibido correctamente.")
-    }
+  }
 }
 </script>
 
@@ -61,3 +60,4 @@ const goToProductDetail = (id) => {
     gap: 1rem;
 }
 </style>
+
