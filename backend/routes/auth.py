@@ -71,7 +71,14 @@ def login_user():
     if status_code == 200:
         session["user_id"] = user["id_users"]
         session["username"] = user["username"]
-        return jsonify({"message": "Login successful"}), 200
+        return jsonify({
+            "message": "Login successful",
+            "user": {
+                "id_users": user["id_users"],
+                "username": user["username"],
+                "email": user["email"]
+            }
+        }), 200
     else:
         return user, status_code
 
