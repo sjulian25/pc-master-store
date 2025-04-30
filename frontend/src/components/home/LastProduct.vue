@@ -2,7 +2,6 @@
     <div class="productos-recientes">
         <h2>Productos Recientes</h2>
         <div class="productos-lista">
-            
             <ProductCard
                 v-for="producto in productos"
                 :key="producto.id_product"
@@ -61,3 +60,4 @@ const goToProductDetail = (id) => {
     gap: 1rem;
 }
 </style>
+
