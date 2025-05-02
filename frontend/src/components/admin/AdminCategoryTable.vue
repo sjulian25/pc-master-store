@@ -24,8 +24,10 @@
         </tbody>
     </table>
     <div v-if="showCreate" class="modal">
-        <h3>Crear Categoría</h3>
         <form @submit.prevent="createCategory">
+            <div class="modal-header">
+                <h3>Crear Categoría</h3>
+            </div>
         <label for="catName">Nombre:</label>
         <input
             id="catName"
@@ -51,7 +53,9 @@
     </div>
     <div v-if="showEdit" class="modal">
         <form @submit.prevent="updateCategory">
-        <h3>Editar Categoría</h3>
+        <div class="modal-header">
+            <h3>Editar Categoría</h3>
+        </div>
         <label for="editCatName">Nombre:</label>
         <input
             id="editCatName"

@@ -1,120 +1,124 @@
 <template>
     <div>
-    <h2>Productos</h2>
-    <button class="create-btn" @click="showCreate = true">Crear Producto</button>
-    <table class="admin-table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th>Marca</th>
-            <th>Categoría</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="prod in productos" :key="prod.id_product">
-            <td>{{ prod.id_product }}</td>
-            <td>{{ prod.name }}</td>
-            <td>{{ prod.description }}</td>
-            <td>${{ prod.price }}</td>
-            <td>{{ prod.stock }}</td>
-            <td>
-                {{ brands.find(b => b.id_brand === prod.id_brand)?.name || 'Sin marca' }}
-            </td>
-            <td>
-                {{ categories.find(c => c.id_type_product === prod.id_type_product)?.name || 'Sin categoría' }}
-            </td>
-            <td>
-                <button class="edit-btn" @click="openEditModal(prod)">Editar</button>
-                <button class="delete-btn" @click="deleteProduct(prod.id_product)">Eliminar</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <div v-if="showCreate" class="modal">
-        <form @submit.prevent="createProduct">
-            <div class="modal-header">
-                <h3>Crear Producto</h3>
-            </div>
-        <label for="prodName">Nombre:</label>
-        <input id="prodName" v-model="newProd.name" type="text" required placeholder="Ej: Laptop" />
+        <h2>Productos</h2>
+        <button class="create-btn" @click="showCreate = true">Crear Producto</button>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Marca</th>
+                    <th>Tipo de Producto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="prod in productos" :key="prod.id_product">
+                    <td>{{ prod.id_product }}</td>
+                    <td>{{ prod.name }}</td>
+                    <td>{{ prod.description }}</td>
+                    <td>${{ prod.price }}</td>
+                    <td>{{ prod.stock }}</td>
+                    <td>
+                        {{ brands.find(b => b.id_brand === prod.id_brand)?.name || 'Sin marca' }}
+                    </td>
+                    <td>
+                        {{ typeProducts.find(tp => tp.id_type_product === prod.id_type_product)?.name || 'Sin tipo' }}
+                    </td>
+                    <td>
+                        <button class="edit-btn" @click="openEditModal(prod)">Editar</button>
+                        <button class="delete-btn" @click="deleteProduct(prod.id_product)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-        <label for="prodDesc">Descripción:</label>
-        <input id="prodDesc" v-model="newProd.description" type="text" required placeholder="Descripción" />
+        <!-- Modal Crear -->
+        <div v-if="showCreate" class="modal">
+            <form @submit.prevent="createProduct">
+                <div class="modal-header">
+                    <h3>Crear Producto</h3>
+                </div>
+                <label for="prodName">Nombre:</label>
+                <input id="prodName" v-model="newProd.name" type="text" required placeholder="Ej: Laptop" />
 
-        <label for="prodPrice">Precio:</label>
-        <input id="prodPrice" v-model="newProd.price" type="number" min="0" step="0.01" required placeholder="Precio" />
+                <label for="prodDesc">Descripción:</label>
+                <input id="prodDesc" v-model="newProd.description" type="text" required placeholder="Descripción" />
 
-        <label for="prodStock">Stock:</label>
-        <input id="prodStock" v-model="newProd.stock" type="number" min="0" required placeholder="Stock" />
+                <label for="prodPrice">Precio:</label>
+                <input id="prodPrice" v-model="newProd.price" type="number" min="0" step="0.01" required placeholder="Precio" />
 
-        <label for="prodBrand">Marca:</label>
-        <select id="prodBrand" v-model="newProd.id_brand" required>
-            <option value="" disabled>Selecciona una marca</option>
-            <option v-for="brand in brands" :key="brand.id_brand" :value="brand.id_brand">
-            {{ brand.name }}
-            </option>
-        </select>
+                <label for="prodStock">Stock:</label>
+                <input id="prodStock" v-model="newProd.stock" type="number" min="0" required placeholder="Stock" />
 
-        <label for="prodCategory">Categoría:</label>
-        <select id="prodCategory" v-model="newProd.id_type_product" required>
-            <option value="" disabled>Selecciona una categoría</option>
-            <option v-for="cat in categories" :key="cat.id_type_product" :value="cat.id_type_product">
-            {{ cat.name }}
-            </option>
-        </select>
+                <label for="prodBrand">Marca:</label>
+                <select id="prodBrand" v-model="newProd.id_brand" required>
+                    <option value="" disabled>Selecciona una marca</option>
+                    <option v-for="brand in brands" :key="brand.id_brand" :value="brand.id_brand">
+                        {{ brand.name }}
+                    </option>
+                </select>
 
-        <div class="modal-actions">
-            <button type="submit" class="edit-btn">Crear</button>
-            <button type="button" class="delete-btn" @click="showCreate = false">Cancelar</button>
+                <label for="prodTypeProduct">Tipo de Producto:</label>
+                <select id="prodTypeProduct" v-model="newProd.id_type_product" required>
+                    <option value="" disabled>Selecciona un tipo</option>
+                    <option v-for="tp in typeProducts" :key="tp.id_type_product" :value="tp.id_type_product">
+                        {{ tp.name }}
+                    </option>
+                </select>
+
+                <div class="modal-actions">
+                    <button type="submit" class="edit-btn">Crear</button>
+                    <button type="button" class="delete-btn" @click="showCreate = false">Cancelar</button>
+                </div>
+                <div v-if="errorMsg" class="error-msg">{{ errorMsg }}</div>
+            </form>
         </div>
-        <div v-if="errorMsg" class="error-msg">{{ errorMsg }}</div>
-        </form>
-    </div>
-    <div v-if="showEdit" class="modal">
-        <form @submit.prevent="updateProduct">
-            <div class="modal-header">
-                <h3>Editar Producto</h3>
-            </div>
-        <label for="prodName">Nombre:</label>
-        <input id="prodName" v-model="editCat.name" type="text" required placeholder="Ej: Laptop" />
 
-        <label for="prodDesc">Descripción:</label>
-        <input id="prodDesc" v-model="editCat.description" type="text" required placeholder="Descripción" />
+        <!-- Modal Editar -->
+        <div v-if="showEdit" class="modal">
+            <form @submit.prevent="updateProduct">
+                <div class="modal-header">
+                    <h3>Editar Producto</h3>
+                </div>
+                <label for="prodName">Nombre:</label>
+                <input id="prodName" v-model="editCat.name" type="text" required placeholder="Ej: Laptop" />
 
-        <label for="prodPrice">Precio:</label>
-        <input id="prodPrice" v-model="editCat.price" type="number" min="0" step="0.01" required placeholder="Precio" />
+                <label for="prodDesc">Descripción:</label>
+                <input id="prodDesc" v-model="editCat.description" type="text" required placeholder="Descripción" />
 
-        <label for="prodStock">Stock:</label>
-        <input id="prodStock" v-model="editCat.stock" type="number" min="0" required placeholder="Stock" />
+                <label for="prodPrice">Precio:</label>
+                <input id="prodPrice" v-model="editCat.price" type="number" min="0" step="0.01" required placeholder="Precio" />
 
-        <label for="prodBrand">Marca:</label>
-        <select id="prodBrand" v-model="editCat.id_brand" required>
-            <option value="" disabled>Selecciona una marca</option>
-            <option v-for="brand in brands" :key="brand.id_brand" :value="brand.id_brand">
-            {{ brand.name }}
-            </option>
-        </select>
+                <label for="prodStock">Stock:</label>
+                <input id="prodStock" v-model="editCat.stock" type="number" min="0" required placeholder="Stock" />
 
-        <label for="prodCategory">Categoría:</label>
-        <select id="prodCategory" v-model="editCat.id_type_product" required>
-            <option value="" disabled>Selecciona una categoría</option>
-            <option v-for="cat in categories" :key="cat.id_type_product" :value="cat.id_type_product">
-            {{ cat.name }}
-            </option>
-        </select>
+                <label for="prodBrand">Marca:</label>
+                <select id="prodBrand" v-model="editCat.id_brand" required>
+                    <option value="" disabled>Selecciona una marca</option>
+                    <option v-for="brand in brands" :key="brand.id_brand" :value="brand.id_brand">
+                        {{ brand.name }}
+                    </option>
+                </select>
 
-        <div class="modal-actions">
-            <button type="submit" class="edit-btn">Guardar</button>
-            <button type="button" class="delete-btn" @click="closeEditModal">Cerrar</button>
+                <label for="prodTypeProduct">Tipo de Producto:</label>
+                <select id="prodTypeProduct" v-model="editCat.id_type_product" required>
+                    <option value="" disabled>Selecciona un tipo</option>
+                    <option v-for="tp in typeProducts" :key="tp.id_type_product" :value="tp.id_type_product">
+                        {{ tp.name }}
+                    </option>
+                </select>
+
+                <div class="modal-actions">
+                    <button type="submit" class="edit-btn">Guardar</button>
+                    <button type="button" class="delete-btn" @click="closeEditModal">Cerrar</button>
+                </div>
+                <div v-if="errorMsg" class="error-msg">{{ errorMsg }}</div>
+            </form>
         </div>
-        <div v-if="errorMsg" class="error-msg">{{ errorMsg }}</div>
-        </form>
-    </div>
     </div>
 </template>
 
@@ -125,9 +129,11 @@ import api from '@/services/api'
 
 const productos = ref([])
 const brands = ref([])
-const categories = ref([])
+const typeProducts = ref([])
 const showCreate = ref(false)
+const showEdit = ref(false)
 const errorMsg = ref('')
+
 const newProd = ref({
     name: '',
     description: '',
@@ -136,18 +142,95 @@ const newProd = ref({
     id_brand: '',
     id_type_product: ''
 })
-const showEdit = ref(false)
-const editCat = ref({ 
+
+const editCat = ref({
+    id_product: null,
     name: '',
     description: '',
     price: '',
     stock: '',
-    id_brand: null,
-    id_type_product: null})
+    id_brand: '',
+    id_type_product: ''
+})
 
+async function fetchProducts() {
+    try {
+        const response = await api.get('/catalog/products')
+        const data = Array.isArray(response.data) ? response.data : (response.data.detailed || [])
+        productos.value = data
+    } catch (e) {
+        productos.value = []
+    }
+}
 
-function openEditModal(cat) {
-    editCat.value = { ...cat }
+async function fetchBrands() {
+    try {
+        const response = await api.get('/catalog/brand')
+        brands.value = response.data.detail || response.data.detailed || response.data || []
+    } catch (e) {
+        brands.value = []
+    }
+}
+
+async function fetchTypeProducts() {
+    try {
+        const response = await api.get('/catalog/type-products')
+        let data = Array.isArray(response.data)
+            ? response.data
+            : (response.data.detail || response.data.detailed || [])
+        typeProducts.value = data.map(tp =>
+            Array.isArray(tp)
+                ? {
+                    id_type_product: tp[0],
+                    id_category: tp[1],
+                    name: tp[2]
+                }
+                : tp
+        )
+    } catch (e) {
+        typeProducts.value = []
+    }
+}
+
+async function createProduct() {
+    errorMsg.value = ''
+    if (
+        !newProd.value.name.trim() ||
+        !newProd.value.description.trim() ||
+        !newProd.value.price ||
+        !newProd.value.stock ||
+        !newProd.value.id_brand ||
+        !newProd.value.id_type_product
+    ) {
+        errorMsg.value = 'Todos los campos son requeridos'
+        return
+    }
+    try {
+        await api.post('/catalog/products', {
+            name: newProd.value.name,
+            description: newProd.value.description,
+            price: parseFloat(newProd.value.price),
+            stock: parseInt(newProd.value.stock),
+            id_brand: parseInt(newProd.value.id_brand),
+            id_type_product: parseInt(newProd.value.id_type_product)
+        })
+        await fetchProducts()
+        Object.assign(newProd.value, {
+            name: '',
+            description: '',
+            price: '',
+            stock: '',
+            id_brand: '',
+            id_type_product: ''
+        })
+        showCreate.value = false
+    } catch (e) {
+        errorMsg.value = 'Error al crear el producto'
+    }
+}
+
+function openEditModal(prod) {
+    editCat.value = { ...prod }
     showEdit.value = true
 }
 
@@ -156,9 +239,9 @@ async function updateProduct() {
     if (
         !editCat.value.name.trim() ||
         !editCat.value.description.trim() ||
-        !editCat.value.price.trim() ||
-        !editCat.value.stock.trim() ||
-        !editCat.value.id_brand.trim() ||
+        !editCat.value.price ||
+        !editCat.value.stock ||
+        !editCat.value.id_brand ||
         !editCat.value.id_type_product
     ) {
         errorMsg.value = 'Todos los campos son requeridos'
@@ -174,15 +257,23 @@ async function updateProduct() {
             id_type_product: parseInt(editCat.value.id_type_product)
         })
         await fetchProducts()
-            closeEditModal()
-    }catch (e) {
+        closeEditModal()
+    } catch (e) {
         errorMsg.value = 'Error al editar el producto'
     }
 }
 
 function closeEditModal() {
     showEdit.value = false
-    editCat.value = { id_brand: null, name: ''}
+    editCat.value = {
+        id_product: null,
+        name: '',
+        description: '',
+        price: '',
+        stock: '',
+        id_brand: '',
+        id_type_product: ''
+    }
     errorMsg.value = ''
 }
 
@@ -196,92 +287,10 @@ async function deleteProduct(id) {
     }
 }
 
-async function fetchProducts() {
-    try {
-    const response = await api.get('/catalog/products')
-    // Si response.data es un array:
-    const data = Array.isArray(response.data) ? response.data : (response.data.detailed || [])
-    productos.value = data.map(p => ({
-        ...p,
-        brand_name: p.brand_name || p.brand || '',
-        category_name: p.category_name || p.category || ''
-    }))
-    } catch (e) {
-    productos.value = []
-    }
-}
-
-async function fetchBrands() {
-    try {
-    const response = await api.get('/catalog/brand')
-    brands.value = response.data.detailed
-    } catch (e) {
-    brands.value = []
-    }
-}
-
-
-async function fetchCategories() {
-    try {
-        const response = await api.get('/catalog/type_products')
-        let data = Array.isArray(response.data)
-            ? response.data
-            : (response.data.detail || response.data.detailed || [])
-        // Transforma cada array en un objeto
-        categories.value = data.map(arr => ({
-            id_type_product: arr[0], // o id_category si así lo usas
-            id_parent: arr[1],
-            name: arr[2],
-            status: arr[3]
-        }))
-        console.log('Categorías transformadas:', categories.value)
-    } catch (e) {
-        categories.value = []
-        console.error('Error al cargar categorías:', e)
-    }
-}
-
-async function createProduct() {
-    errorMsg.value = ''
-    if (
-    !newProd.value.name.trim() ||
-    !newProd.value.description.trim() ||
-    !newProd.value.price ||
-    !newProd.value.stock ||
-    !newProd.value.id_brand ||
-    !newProd.value.id_type_product
-    ) {
-    errorMsg.value = 'Todos los campos son requeridos'
-    return
-    }
-    try {
-    await api.post('/catalog/products', {
-        name: newProd.value.name,
-        description: newProd.value.description,
-        price: parseFloat(newProd.value.price),
-        stock: parseInt(newProd.value.stock),
-        id_brand: parseInt(newProd.value.id_brand),
-        id_type_product: parseInt(newProd.value.id_type_product) 
-    })
-    await fetchProducts()
-    Object.assign(newProd.value, {
-        name: '',
-        description: '',
-        price: '',
-        stock: '',
-        id_brand: '',
-        id_type_product: ''
-    })
-    showCreate.value = false
-    } catch (e) {
-    errorMsg.value = 'Error al crear el producto'
-    }
-}
-
 onMounted(() => {
     fetchProducts()
     fetchBrands()
-    fetchCategories()
+    fetchTypeProducts()
 })
 </script>
 

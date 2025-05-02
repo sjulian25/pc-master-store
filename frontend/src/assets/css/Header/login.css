@@ -212,3 +212,13 @@ span{
     text-decoration: none;
     color: var(--ch-c-white);
 }
+.status-badge {
+    display: inline-block;
+    width: 0.7em;
+    height: 0.7em;
+    background: #4CAF50;
+    border-radius: 50%;
+    margin-left: 0.4em;
+    vertical-align: middle;
+    box-shadow: 0 0 2px #222831;
+}

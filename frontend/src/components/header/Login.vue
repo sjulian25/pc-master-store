@@ -59,7 +59,11 @@
             </ul>
             <ul v-else>
                 <li>
-                    <span>Conectado como <b>{{ authStore.user?.username || authStore.user?.email }}</b></span>
+                    <strong>{{ authStore.user?.username || authStore.user?.email }}</strong>
+                    <span>
+                        Conectado
+                        <span class="status-badge"></span>
+                    </span> 
                 </li>
                 <li>
                     <button @click="goToAdmin">

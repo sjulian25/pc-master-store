@@ -10,9 +10,11 @@ from controllers.brand_controller import (
     get_brands_controller,
     get_brands_by_id_controller,
     delete_brand_controller,
+    get_inactive_brands_controller,
     get_products_by_brand_controller,
     insert_brand_controller,
     activate_brand_controller,
+    update_brand_controller,
 )
 from controllers.product_controller import (
     get_all_products_controller,
@@ -23,7 +25,15 @@ from controllers.product_controller import (
     get_inactive_products_controller,
     restore_product_controller,
 )
-from controllers.type_products_controller import get_all_type_of_products_controller
+from controllers.type_products_controller import (
+    delete_type_product_controller,
+    get_all_type_of_products_controller,
+    get_inactive_type_products_controller,
+    get_type_product_by_id_controller,
+    create_type_product_controller,
+    restore_type_product_controller,
+    update_type_product_controller,
+)
 
 # * CREATE BLUEPRINT
 catalog_bp = Blueprint("catalog", __name__)
@@ -108,6 +118,11 @@ def get_brands():
     )  # Llama al controlador para obtener todas las marcas
 
 
+@catalog_bp.route("/brand/inactive", methods=["GET"])
+def get_inactive_brands():
+    return get_inactive_brands_controller()
+
+
 @catalog_bp.route("/brand/<int:id_brand>", methods=["GET"])
 def get_brand_by_id(id_brand):
     response, status_code = get_brands_by_id_controller(id_brand)
@@ -146,7 +161,45 @@ def get_products_by_brand(id_brand):
     )  # Llama al controlador para obtener productos por marca
 
 
+@catalog_bp.route("/brand/<int:id_brand>", methods=["PUT"])
+def update_brand(id_brand):
+    data = request.get_json()
+    return update_brand_controller(id_brand, data)
+
+
 # * ROUTES FOR TYPE PRODUCTS
-@catalog_bp.route("/type_products", methods=["GET"])
+@catalog_bp.route("/type-products", methods=["GET"])
 def list_type_products():
     return get_all_type_of_products_controller()
+
+
+@catalog_bp.route("/type-products/inactive", methods=["GET"])
+def list_inactive_type_products():
+    return get_inactive_type_products_controller()
+
+
+@catalog_bp.route("/type-products/<int:id_type_product>", methods=["GET"])
+def list_type_product_by_id(id_type_product):
+    return get_type_product_by_id_controller(id_type_product)
+
+
+@catalog_bp.route("/type-products", methods=["POST"])
+def create_type_product():
+    data = request.get_json()
+    return create_type_product_controller(data)
+
+
+@catalog_bp.route("/type-products/<int:id_type_product>", methods=["PUT"])
+def update_type_product(id_type_product):
+    data = request.get_json()
+    return update_type_product_controller(id_type_product, data)
+
+
+@catalog_bp.route("/type-products/<int:id_type_product>", methods=["DELETE"])
+def delete_type_product(id_type_product):
+    return delete_type_product_controller(id_type_product)
+
+
+@catalog_bp.route("/type-products/restore/<int:id_type_product>", methods=["PATCH"])
+def restore_type_product(id_type_product):
+    return restore_type_product_controller(id_type_product)

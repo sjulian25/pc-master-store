@@ -3,24 +3,27 @@
     <h1 class="dashboard-title">Panel de Administración</h1>
     <div class="summary-cards">
         <div class="card summary-product">
-        <i class="fas fa-box"></i>
         <div>
             <h3>Productos</h3>
             <p>{{ totalProducts }}</p>
         </div>
         </div>
         <div class="card summary-brand">
-        <i class="fas fa-tags"></i>
         <div>
             <h3>Marcas</h3>
             <p>{{ totalBrands }}</p>
         </div>
         </div>
         <div class="card summary-category">
-        <i class="fas fa-list"></i>
         <div>
             <h3>Categorías</h3>
             <p>{{ totalCategories }}</p>
+        </div>
+        </div>
+        <div class="card summary-typeproducts">
+        <div>
+            <h3>Tipo de Producto</h3>
+            <p>{{ totalTypeProducts }}</p>
         </div>
         </div>
     </div>
@@ -34,21 +37,25 @@ import api from '@/services/api'
 const totalProducts = ref(0)
 const totalBrands = ref(0)
 const totalCategories = ref(0)
+const totalTypeProducts = ref(0)
 
 async function fetchSummary() {
     try {
-        const [prodRes, brandRes, catRes] = await Promise.all([
+        const [prodRes, brandRes, catRes, typRes] = await Promise.all([
             api.get('/catalog/products'),
             api.get('/catalog/brand'),
-            api.get('/catalog/category')
+            api.get('/catalog/category'),
+            api.get('/catalog/type-products')
         ])
         totalProducts.value = Array.isArray(prodRes.data) ? prodRes.data.length : (prodRes.data.detailed?.length || prodRes.data.detail?.length || 0)
         totalCategories.value = Array.isArray(catRes.data)? catRes.data.length : (catRes.data.detailed?.length || catRes.data.detail?.length || 0)
         totalBrands.value = Array.isArray(brandRes.data)? brandRes.data.length : (brandRes.data.detailed?.length || brandRes.data.detail?.length || 0)
+        totalTypeProducts.value = Array.isArray(typRes.data)? typRes.data.length : (typRes.data.detailed?.length || typRes.data.detail?.length || 0) 
     } catch (e) {
         totalProducts.value = 0
         totalBrands.value = 0
         totalCategories.value = 0
+        totalTypeProducts.value = 0
         console.error('Error en fetchSummary:', e)
     }
 }
@@ -84,10 +91,6 @@ onMounted(fetchSummary)
 .card:hover {
     transform: translateY(-6px) scale(1.03);
 }
-.card i {
-    font-size: 2.3rem;
-    color: #FFD369;
-}
 .card h3 {
     margin: 0;
     font-size: 1.1rem;
@@ -102,4 +105,5 @@ onMounted(fetchSummary)
 .summary-product { border-left: 6px solid #FFD369; }
 .summary-brand { border-left: 6px solid #4CAF50; }
 .summary-category { border-left: 6px solid #2196F3; }
+.summary-typeproducts { border-left: 6px solid #9521f3; }
 </style>
