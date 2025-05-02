@@ -7,6 +7,10 @@ import ProductPage from "@/pages/ProductPage.vue";
 // import ProductPage from "@/pages/ProductPage.vue";
 import Login from "@/pages/Login.vue";
 import Register from "@/pages/Register.vue";
+import AdminDashboard from '@/pages/AdminDashboard.vue'
+import AdminProducts from '@/pages/AdminProducts.vue'
+import AdminBrands from '@/pages/AdminBrands.vue'
+import AdminCategories from '@/pages/AdminCategories.vue'
 
 const routes = [
     {
@@ -30,6 +34,17 @@ const routes = [
                 props:true
                 
             },
+            {
+                path: '/admin',
+                component: AdminDashboard,
+                children: [
+                    { path: '', name: 'AdminSummary', component: () => import('@/components/admin/AdminSummary.vue') },
+                    { path: 'products', name: 'AdminProducts', component: AdminProducts },
+                    { path: 'brands', name: 'AdminBrands', component: AdminBrands },
+                    { path: 'categories', name: 'AdminCategories', component: AdminCategories }
+                ]
+            }
+
 
         ]
     },
