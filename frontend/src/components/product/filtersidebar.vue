@@ -1,6 +1,6 @@
 <template>
 <div class="filter-sidebar">
-    <h3>Filtrar por categorias</h3>
+    <h3>Filtrar por tipos</h3>
 
     <div class="filter-group">
     <ul class="category-list">
@@ -9,7 +9,7 @@
             @click="selectCategory(null)" 
             :class="{ selected: selectedCategory === null }"
         >
-            Todas las categorias 
+            Todos los tipos
         </li>
         <li 
         v-for="category in categories" 

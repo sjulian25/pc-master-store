@@ -1,5 +1,5 @@
 <template>
-<v-main>
+<main>
     <div class="product-page">
     <!-- Breadcrumb en la parte superior -->
     <Breadcrumb />
@@ -29,7 +29,7 @@
         </div>
     </div>
     </div>
-</v-main>
+</main>
 </template>
 
 
@@ -45,7 +45,9 @@ import filterprice from '@/components/product/filterprice.vue'
 const products = ref([])
 const router = useRouter()
 const route = useRoute()
-
+const selectedCategory = ref(route.query.category || '')
+const selectedBrand = ref(route.query.brand || '')
+console.log("Marca seleccionada desde la URL:", selectedBrand.value);
 const goToProductDetail = (id) => {
 router.push({ name: 'ProductDetail', params: { id } })
 }
@@ -70,6 +72,7 @@ selectedCategoryId.value = categoryId || null
 // Computed que devuelve los productos filtrados
 const filteredProduct = computed(() => {
 let result = products.value
+console.log("estos son los valores que trae",result)
 
 // Filtrar por término de búsqueda solo si hay algo escrito
 if (searchTerm.value.trim()) {
@@ -81,7 +84,17 @@ if (searchTerm.value.trim()) {
       (p.category?.name && normalizeText(p.category.name).includes(search))
     )
   }
-// Filtrar por categoría
+// Filtrar por categoría desde el navbar (string en query)
+if (selectedCategory.value) {
+  result = result.filter(p =>
+    p.category?.name && normalizeText(p.category.name).includes(normalizeText(selectedCategory.value))
+  );
+}
+
+if (selectedBrand.value) {
+  result = result.filter(p => p.id_brand == selectedBrand.value);
+}
+// Filtrar por categoría(type_product en la db)
 if (selectedCategoryId.value) {
 result = result.filter(p => p.id_type_product === selectedCategoryId.value)
 }
@@ -114,7 +127,14 @@ function handlePriceFilter(range) {
 watch(() => route.query.search, (newSearch) => {
   searchTerm.value = newSearch || '' // Actualiza el término de búsqueda
 }, { immediate: true })
+// Observar cambios en la URL para actualizar los filtros
+watch(() => route.query.category, (newCategory) => {
+  selectedCategory.value = newCategory || ''
+}, { immediate: true })
 
+watch(() => route.query.brand, (newBrand) => {
+  selectedBrand.value = newBrand || ''
+}, { immediate: true })
 
 </script>
 
