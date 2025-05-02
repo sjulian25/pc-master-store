@@ -28,12 +28,17 @@ def get_type_product_by_id_controller(id_type_product):
 
 
 def create_type_product_controller(data):
-    status, response = create_type_product()
+    status, response = create_type_product(data)
     if not status:
-        return {"message": "request failed", "detail": response}, 500
+        return jsonify({"message": "request failed", "detail": response}), 500
     if not response:
-        return {"message": "request failed", "detail": response}, 400
-    return {"message": "type product created", "detail": response}
+        return jsonify({"message": "request failed"}), 400
+    return (
+        jsonify(
+            {"message": "type product created", "detail": f"id_product: {response}"}
+        ),
+        201,
+    )
 
 
 # TODO: update type product using id to identify it

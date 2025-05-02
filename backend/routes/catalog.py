@@ -167,10 +167,10 @@ def list_type_product_by_id(id_type_product):
     return get_type_product_by_id_controller(id_type_product)
 
 
-# TODO: use controller to add a new type product
 @catalog_bp.route("/type-products", methods=["POST"])
-def create_type_product(data):
-    pass
+def create_type_product():
+    data = request.get_json()
+    return create_type_product_controller(data)
 
 
 # TODO: use controller for update a type product, note: update it expecting id_type_product
