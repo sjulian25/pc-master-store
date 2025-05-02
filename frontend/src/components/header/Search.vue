@@ -6,10 +6,24 @@
             <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" stroke="#fff" d="M22 22L20 20"></path>
         </svg>
         </button>
-        <input placeholder="search.." class="input" name="text" type="text">
+        <input v-model="searchTerm" placeholder="search.." class="input" name="text" type="text" @keyup.enter="onSearch">
     </div>
 </template>
 
-<script></script>
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const searchTerm = ref('')  // Esta variable almacenará el texto de búsqueda
+const router = useRouter()
+
+// Función que se ejecuta cuando se presiona Enter en el search bar
+const onSearch = () => {
+router.push({ 
+name: 'ProductPage', 
+query: { search: searchTerm.value || undefined } // 👈 esto limpia el query si está vacío
+})
+}
+</script>
 
 <style src="../../assets/css/Header/search.css" scoped></style>

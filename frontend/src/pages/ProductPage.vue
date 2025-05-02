@@ -34,8 +34,8 @@
 
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, computed, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import ProductCard from '@/components/product/ProductCard.vue'
 import { getAllProducts } from '@/services/productService'
 import Breadcrumb from '@/components/layout/Breadcrumb.vue'
@@ -44,11 +44,15 @@ import filterprice from '@/components/product/filterprice.vue'
 
 const products = ref([])
 const router = useRouter()
+const route = useRoute()
 
 const goToProductDetail = (id) => {
 router.push({ name: 'ProductDetail', params: { id } })
 }
-
+const searchTerm = ref(route.query.search || '') // Tomamos el término de búsqueda desde la URL
+const normalizeText = (text) => {
+  return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+}
 onMounted(async () => {
 try {
     const response = await getAllProducts()
@@ -67,6 +71,16 @@ selectedCategoryId.value = categoryId || null
 const filteredProduct = computed(() => {
 let result = products.value
 
+// Filtrar por término de búsqueda solo si hay algo escrito
+if (searchTerm.value.trim()) {
+    const search = normalizeText(searchTerm.value)
+
+    result = result.filter(p =>
+      (p.name && normalizeText(p.name).includes(search)) ||
+      (p.brand?.name && normalizeText(p.brand.name).includes(search)) ||
+      (p.category?.name && normalizeText(p.category.name).includes(search))
+    )
+  }
 // Filtrar por categoría
 if (selectedCategoryId.value) {
 result = result.filter(p => p.id_type_product === selectedCategoryId.value)
@@ -96,6 +110,11 @@ function handlePriceFilter(range) {
     selectedPriceRange.value = range
   }
 }
+// Observar los cambios en el parámetro `search` de la URL
+watch(() => route.query.search, (newSearch) => {
+  searchTerm.value = newSearch || '' // Actualiza el término de búsqueda
+}, { immediate: true })
+
 
 </script>
 
