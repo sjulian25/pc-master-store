@@ -102,9 +102,20 @@ def update_type_product(id_type_product, data):
     return False
 
 
-# TODO: set is_active=0 in type product by id_type_product
 def delete_type_product(id_type_product):
-    pass
+    conn = get_connection()
+    if conn:
+        cursor = conn.cursor()
+        sql = """ 
+            UPDATE type_product SET is_active = 0 WHERE id_type_product = %s
+        """
+        cursor.execute(sql, (id_type_product,))
+        conn.commit()
+        affected = cursor.rowcount
+        cursor.close()
+        conn.close()
+        return affected > 0
+    return False, MySQLdb.Error
 
 
 # TODO: set is_active=1 in type product by id_type_product

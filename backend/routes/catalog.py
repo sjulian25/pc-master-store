@@ -24,6 +24,7 @@ from controllers.product_controller import (
     restore_product_controller,
 )
 from controllers.type_products_controller import (
+    delete_type_product_controller,
     get_all_type_of_products_controller,
     get_inactive_type_products_controller,
     get_type_product_by_id_controller,
@@ -180,10 +181,9 @@ def update_type_product(id_type_product):
     return update_type_product_controller(id_type_product, data)
 
 
-# TODO: use controller to remove a type product, note: delete it expecting id_type_product
 @catalog_bp.route("/type-products/<int:id_type_product>", methods=["DELETE"])
 def delete_type_product(id_type_product):
-    pass
+    return delete_type_product_controller(id_type_product)
 
 
 # TODO: use controller to restore deleted type product, note: restore it expecting id_type_product

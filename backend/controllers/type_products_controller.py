@@ -1,9 +1,11 @@
 from flask import jsonify
 from models.type_product import (
+    delete_type_product,
     get_all_type_of_products,
     get_inactive_type_products,
     get_type_product_by_id,
     create_type_product,
+    type_product_exists,
     update_type_product,
 )
 
@@ -53,9 +55,15 @@ def update_type_product_controller(id_type_product, data):
         return jsonify({"message": "update query failed"}), 500
 
 
-# TODO: delete type product using id_type_product
 def delete_type_product_controller(id_type_product):
-    pass
+    if not type_product_exists(id_type_product):
+        return jsonify({"message": "type product not found"}), 404
+
+    response = delete_type_product(id_type_product)
+    if response:
+        return jsonify({"message": "type product deleted"}), 200
+    else:
+        return jsonify(response), 500
 
 
 # TODO: restore an type product by its id
