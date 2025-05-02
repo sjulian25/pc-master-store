@@ -22,8 +22,10 @@
         </tbody>
     </table>
     <div v-if="showCreate" class="modal">
-        <h3>Crear Marca</h3>
         <form @submit.prevent="createBrand">
+            <div class="modal-header">
+                <h3>Crear Marca</h3>
+            </div>
         <label for="brandName">Nombre de la marca:</label>
         <input
             id="brandName"
@@ -41,7 +43,9 @@
     </div>
     <div v-if="showEdit" class="modal">
         <form @submit.prevent="updateBrand">
-        <h3>Editar Marca</h3>
+            <div class="modal-header">
+                <h3>Editar Marca</h3>
+            </div>
         <label for="editCatName">Nombre:</label>
         <input
             id="editCatName"

@@ -6,18 +6,21 @@
     </div>
     <nav>
         <router-link to="/admin" exact-active-class="active">
-        <i class="fas fa-home"></i> Resumen
+            Resumen
         </router-link>
         <div>
         <router-link to="/admin/products" exact-active-class="active" @click="toggleProducts">
-            <i class="fas fa-box"></i> Productos
+            Productos
         </router-link>
         <div v-if="showProducts" class="submenu">
             <router-link to="/admin/brands" exact-active-class="active">
-                <i class="fas fa-tags"></i> Marcas
+                Marcas
             </router-link>
             <router-link to="/admin/categories" exact-active-class="active">
-                <i class="fas fa-list"></i> Categorías
+                Categorías
+            </router-link>
+            <router-link to="/admin/typeproducts" exact-active-class="active">
+                Tipos de Producto
             </router-link>
         </div>
         </div>
@@ -27,6 +30,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import '@/assets/css/admin/admin-table.css'
 const showProducts = ref(false)
 function toggleProducts() {
     showProducts.value = !showProducts.value
