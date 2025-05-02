@@ -6,6 +6,7 @@ from models.brand import (
     insert_brand,
     get_products_by_brand,
     activate_brand_by_id,
+    update_brand,
 )
 
 
@@ -104,3 +105,11 @@ def insert_brand_controller():
         name
     )  # Llama a insert_brand pasando solo el nombre
     return jsonify(response), status_code  # Devuelve la respuesta como JSON
+
+
+def update_brand_controller(id_brand, data):
+    response = update_brand(id_brand, data)
+    if response:
+        return jsonify({"message": "brand updated"}), 200
+    else:
+        return jsonify(response), 500

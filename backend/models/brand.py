@@ -164,3 +164,27 @@ def get_products_by_brand(id_brand):
 
     except Exception as e:
         return False, str(e)  # Manejo de errores
+
+
+def update_brand(id_brand, data):
+    try:
+        conn = get_connection()
+        if conn:
+            cursor = conn.cursor(MySQLdb.cursors.DictCursor)
+            sql = """
+                UPDATE brand 
+                SET name = %s 
+                WHERE id_brand = %s AND is_active=1
+            """
+            values = (
+                data.get("name"),
+                id_brand,
+            )
+            cursor.execute(sql, values)
+            conn.commit()
+            affected = cursor.rowcount
+            cursor.close()
+            conn.close()
+            return affected > 0
+    except MySQLdb.Error as e:
+        return False, e
