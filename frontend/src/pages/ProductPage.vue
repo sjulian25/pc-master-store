@@ -1,5 +1,5 @@
 <template>
-<v-main>
+<main>
     <div class="product-page">
     <!-- Breadcrumb en la parte superior -->
     <Breadcrumb />
@@ -29,13 +29,13 @@
         </div>
     </div>
     </div>
-</v-main>
+</main>
 </template>
 
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, computed, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import ProductCard from '@/components/product/ProductCard.vue'
 import { getAllProducts } from '@/services/productService'
 import Breadcrumb from '@/components/layout/Breadcrumb.vue'
@@ -44,11 +44,17 @@ import filterprice from '@/components/product/filterprice.vue'
 
 const products = ref([])
 const router = useRouter()
-
+const route = useRoute()
+const selectedCategory = ref(route.query.category || '')
+const selectedBrand = ref(route.query.brand ? parseInt(route.query.brand) : null)
+console.log("Marca seleccionada desde la URL:", selectedBrand.value);
 const goToProductDetail = (id) => {
 router.push({ name: 'ProductDetail', params: { id } })
 }
-
+const searchTerm = ref(route.query.search || '') // Tomamos el término de búsqueda desde la URL
+const normalizeText = (text) => {
+  return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+}
 onMounted(async () => {
 try {
     const response = await getAllProducts()
@@ -66,8 +72,33 @@ selectedCategoryId.value = categoryId || null
 // Computed que devuelve los productos filtrados
 const filteredProduct = computed(() => {
 let result = products.value
+// Logs para depurar
+console.log("ID de marcas en productos:", result.map(p => p.id_brand));
+  console.log("Filtro de marca seleccionado:", selectedBrand.value, typeof selectedBrand.value);
 
-// Filtrar por categoría
+
+// Filtrar por término de búsqueda solo si hay algo escrito
+if (searchTerm.value.trim()) {
+    const search = normalizeText(searchTerm.value)
+
+    result = result.filter(p =>
+      (p.name && normalizeText(p.name).includes(search)) ||
+      (p.brand?.name && normalizeText(p.brand.name).includes(search)) ||
+      (p.category?.name && normalizeText(p.category.name).includes(search))
+    )
+  }
+// Filtrar por categoría desde el navbar (string en query)
+if (selectedCategory.value) {
+  result = result.filter(p =>
+    p.category?.name && normalizeText(p.category.name).includes(normalizeText(selectedCategory.value))
+  );
+}
+
+if (selectedBrand.value) {
+  result = result.filter(p => p.id_brand == Number(selectedBrand.value));
+}
+
+// Filtrar por categoría(type_product en la db)
 if (selectedCategoryId.value) {
 result = result.filter(p => p.id_type_product === selectedCategoryId.value)
 }
@@ -96,6 +127,18 @@ function handlePriceFilter(range) {
     selectedPriceRange.value = range
   }
 }
+// Observar los cambios en el parámetro `search` de la URL
+watch(() => route.query.search, (newSearch) => {
+  searchTerm.value = newSearch || '' // Actualiza el término de búsqueda
+}, { immediate: true })
+// Observar cambios en la URL para actualizar los filtros
+watch(() => route.query.category, (newCategory) => {
+  selectedCategory.value = newCategory || ''
+}, { immediate: true })
+
+watch(() => route.query.brand, (newBrand) => {
+  selectedBrand.value = newBrand ? parseInt(newBrand) : null
+}, { immediate: true })
 
 </script>
 

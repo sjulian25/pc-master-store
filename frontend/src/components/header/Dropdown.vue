@@ -3,7 +3,7 @@
         <button class="dropdown-button value">{{ label }}</button>
         <div v-if="show" class="dropdown-menu">
             <p v-for="(item, index) in items" :key="index" @click="handleClick(item)">
-                {{ item }}
+                {{ item.name }}
             </p>
         </div>
     </div>
@@ -21,7 +21,8 @@ const emit = defineEmits(['select'])
 const show = ref(false)
 
 function handleClick(item){
-    emit('select', item)
+    emit('select', item.id)
+    console.log("aso lleggan los datos al drop", item.id)
     show.value = false
 }
 </script>
