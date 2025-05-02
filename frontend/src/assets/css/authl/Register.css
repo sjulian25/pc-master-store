@@ -1,0 +1,88 @@
+/* color palette from */
+:root {
+    --ch-c-black: #222831;
+    --ch-c-gray-dark: #393E46;
+    --ch-c-yellow: #FFD369;
+    --ch-c-white: #EEEEEE;
+  }
+/* Fondo negro y centrado */
+.registro-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: var(--ch-c-black);
+  }
+  
+  /* Formulario */
+  .registro-form {
+    background: var(--ch-c-gray-dark);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px var(--ch-c-gray-dark);
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Logo centrado */
+  .logo img {
+    width: 150px;
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Inputs */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  input {
+    padding: 10px;
+    margin-top: 5px;
+    font-size: 16px;
+    background-color: var(--ch-c-black);
+    border-radius: 5px;
+    color: white;
+  }
+  
+  /* Texto */
+  h1, p, label {
+    color: white;
+    text-align: center;
+  }
+  
+  /* Botón */
+  #btn-registrar {
+    padding: 10px 20px;
+    background-color: var(--ch-c-yellow);
+    color: var(--ch-c-black);
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  .btn-registrar:hover {
+    background-color: #369f76;
+  }
+  .show-password-btn{
+    padding: 10px 20px;
+    background-color: var(--ch-c-yellow);
+    color: var(--ch-c-black);
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px;
+  }

@@ -1,0 +1,146 @@
+from db_connection import get_connection
+from flask import jsonify, session
+import MySQLdb.cursors, hashlib, secrets
+from werkzeug.security import generate_password_hash, check_password_hash
+
+
+# crear un nuevo usuario
+def register_user(data):
+    cnn = get_connection()
+    if cnn:
+        cursor = cnn.cursor(MySQLdb.cursors.DictCursor)
+        salt = secrets.token_hex(16)
+        raw_password = data["user_password"] + salt
+        hashed_password = hashlib.sha256(raw_password.encode("utf-8")).hexdigest()
+        recovery_token = secrets.token_hex(32)
+        insertardatos = "INSERT INTO users (username,user_password,email,salt,recovery_token) values(%s,%s,%s,%s,%s)"
+        values = (
+            data["username"],
+            hashed_password,
+            data["email"],
+            salt,
+            recovery_token,
+        )
+        cursor.execute(insertardatos, values)
+        cnn.commit()
+        new_id = cursor.lastrowid
+        cursor.close()
+        cnn.close()
+        return new_id
+    return None
+
+
+# consultar un usuario por el email
+def get_user_by_email(email):
+    try:
+        cnn = get_connection()
+        if not cnn:
+            return None
+
+        with cnn.cursor() as cursor:
+            search = (
+                "SELECT id_users,username,email,last_login FROM users WHERE email = %s"
+            )
+            cursor.execute(search, (email,))
+            user = cursor.fetchone()
+
+        cnn.close()
+        return user
+
+    except Exception as e:
+        print(f"Errot searching user by email: {e}")
+        return None
+
+
+# consultar el cliente por el id
+def get_user_by_id(id_users):
+    try:
+        cnn = get_connection()
+        with cnn.cursor() as cursor:
+            search = "SELECT id_users,username,email,last_login FROM users WHERE id_users = %s"
+            cursor.execute(search, (id_users,))
+            user = cursor.fetchone()
+
+        cnn.close()
+        return user
+
+    except Exception as e:
+        print(f"Errot searching user by id: {e}")
+        return None
+
+
+# login de usuario
+def get_login(email, password):
+    try:
+        cnn = get_connection()
+
+        with cnn.cursor(MySQLdb.cursors.DictCursor) as cursor:
+            cursor.execute(
+                "SELECT user_password,salt FROM users WHERE email = %s AND is_active=1",
+                (email,),
+            )
+            user_password = cursor.fetchone()
+        cnn.close()
+        if user_password is None:
+            return None, "User not found"
+        stored_hasd = user_password["user_password"]
+        salt = user_password["salt"]
+        raw_password = password + salt
+        password_confirm = hashlib.sha256(raw_password.encode("utf-8")).hexdigest()
+
+        if password_confirm == stored_hasd:
+            # Obtener datos básicos del usuario para usarlos en la sesión
+            cnn = get_connection()
+            with cnn.cursor(MySQLdb.cursors.DictCursor) as cursor:
+                cursor.execute(
+                    "SELECT id_users, username, email FROM users WHERE email = %s AND is_active=1",
+                    (email,),
+                )
+                user_data = cursor.fetchone()
+            cnn.close()
+            return user_data, 200
+
+        return None, "Invalid email or password"
+
+    except Exception as e:
+        return None, str(e)
+
+
+def update_user(user_id, data):
+    try:
+        cnn = get_connection()
+
+        with cnn.cursor() as cursor:
+            # actualizar
+            update_query = "UPDATE users SET username=%s, email=%s WHERE id_users=%s AND is_active=1"
+            cursor.execute(update_query, (data["username"], data["email"], user_id))
+
+            if cursor.rowcount == 0:
+                return jsonify({"message": "User not found or no changes made"}), 404
+
+        cnn.commit()
+        cnn.close()
+
+        return jsonify({"message": "User update successfully"}), 200
+    except Exception as e:
+        return jsonify({"message": f"Error: {str(e)}"}), 500
+
+
+# consultar todos los clientes
+def get_all_user():
+    try:
+        cnn = get_connection()
+
+        with cnn.cursor(MySQLdb.cursors.DictCursor) as cursor:
+            search = "SELECT id_users,username,email,last_login FROM users WHERE is_active = 1"
+            cursor.execute(
+                search,
+            )
+            users = cursor.fetchall()
+        cnn.close()
+        return users
+
+    except Exception as e:
+        print(f"Error searching users: {e}")
+        return None
+
