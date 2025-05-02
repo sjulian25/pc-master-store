@@ -46,7 +46,7 @@ const products = ref([])
 const router = useRouter()
 const route = useRoute()
 const selectedCategory = ref(route.query.category || '')
-const selectedBrand = ref(route.query.brand || '')
+const selectedBrand = ref(route.query.brand ? parseInt(route.query.brand) : null)
 console.log("Marca seleccionada desde la URL:", selectedBrand.value);
 const goToProductDetail = (id) => {
 router.push({ name: 'ProductDetail', params: { id } })
@@ -72,7 +72,10 @@ selectedCategoryId.value = categoryId || null
 // Computed que devuelve los productos filtrados
 const filteredProduct = computed(() => {
 let result = products.value
-console.log("estos son los valores que trae",result)
+// Logs para depurar
+console.log("ID de marcas en productos:", result.map(p => p.id_brand));
+  console.log("Filtro de marca seleccionado:", selectedBrand.value, typeof selectedBrand.value);
+
 
 // Filtrar por término de búsqueda solo si hay algo escrito
 if (searchTerm.value.trim()) {
@@ -92,8 +95,9 @@ if (selectedCategory.value) {
 }
 
 if (selectedBrand.value) {
-  result = result.filter(p => p.id_brand == selectedBrand.value);
+  result = result.filter(p => p.id_brand == Number(selectedBrand.value));
 }
+
 // Filtrar por categoría(type_product en la db)
 if (selectedCategoryId.value) {
 result = result.filter(p => p.id_type_product === selectedCategoryId.value)
@@ -133,7 +137,7 @@ watch(() => route.query.category, (newCategory) => {
 }, { immediate: true })
 
 watch(() => route.query.brand, (newBrand) => {
-  selectedBrand.value = newBrand || ''
+  selectedBrand.value = newBrand ? parseInt(newBrand) : null
 }, { immediate: true })
 
 </script>

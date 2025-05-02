@@ -67,7 +67,7 @@ function handleBrandSelect(item) {
     if (item) {
         router.push({
             name: 'ProductPage',
-            query: { brand: item.id_brand }  // Cambiado a 'item' directamente, ya que 'item' es un string en este caso
+            query: { brand: item}  // Cambiado a 'item' directamente, ya que 'item' es un string en este caso
         });
     }
 }

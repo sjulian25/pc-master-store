@@ -2,7 +2,10 @@ import api from "./api";
 
 export const getBrands = async () => {
     const response = await api.get('/catalog/brand');
-    return response.data.detailed; // <- devuelve { id_brand, name, ... }
+    return response.data.detailed.map(brand => ({
+        name: brand.name,
+        id: brand.id_brand
+      })) // <- devuelve { id_brand, name, ... }
 };
 
 export const getBrandsId = async (id_brand) => {

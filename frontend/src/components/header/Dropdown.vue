@@ -21,8 +21,8 @@ const emit = defineEmits(['select'])
 const show = ref(false)
 
 function handleClick(item){
-    emit('select', item)
-    console.log("aso lleggan los datos al drop", item)
+    emit('select', item.id)
+    console.log("aso lleggan los datos al drop", item.id)
     show.value = false
 }
 </script>
