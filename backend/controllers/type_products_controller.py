@@ -4,6 +4,7 @@ from models.type_product import (
     get_inactive_type_products,
     get_type_product_by_id,
     create_type_product,
+    update_type_product,
 )
 
 
@@ -41,9 +42,15 @@ def create_type_product_controller(data):
     )
 
 
-# TODO: update type product using id to identify it
 def update_type_product_controller(id_type_product, data):
-    pass
+    response = update_type_product(id_type_product, data)
+    if response:
+        return (
+            jsonify({"message": "type product updated"}),
+            200,
+        )
+    else:
+        return jsonify({"message": "update query failed"}), 500
 
 
 # TODO: delete type product using id_type_product

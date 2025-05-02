@@ -28,6 +28,7 @@ from controllers.type_products_controller import (
     get_inactive_type_products_controller,
     get_type_product_by_id_controller,
     create_type_product_controller,
+    update_type_product_controller,
 )
 
 # * CREATE BLUEPRINT
@@ -173,10 +174,10 @@ def create_type_product():
     return create_type_product_controller(data)
 
 
-# TODO: use controller for update a type product, note: update it expecting id_type_product
 @catalog_bp.route("/type-products/<int:id_type_product>", methods=["PUT"])
 def update_type_product(id_type_product):
-    pass
+    data = request.get_json()
+    return update_type_product_controller(id_type_product, data)
 
 
 # TODO: use controller to remove a type product, note: delete it expecting id_type_product

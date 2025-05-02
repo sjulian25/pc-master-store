@@ -79,9 +79,27 @@ def create_type_product(data):
         return False, e
 
 
-# TODO: set data as new values in type product by id_type_product
 def update_type_product(id_type_product, data):
-    pass
+    conn = get_connection()
+    if conn:
+        cursor = conn.cursor()
+        sql = """
+            UPDATE type_product
+            SET name = %s, id_category = %s
+            WHERE id_type_product = %s AND is_active=1
+        """
+        values = (
+            data.get("name"),
+            data.get("id_category"),
+            id_type_product,
+        )
+        cursor.execute(sql, values)
+        conn.commit()
+        affected = cursor.rowcount
+        cursor.close()
+        conn.close()
+        return affected > 0
+    return False
 
 
 # TODO: set is_active=0 in type product by id_type_product
