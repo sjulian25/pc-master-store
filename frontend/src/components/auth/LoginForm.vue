@@ -1,63 +1,43 @@
 <template>
-<div class="login-container">
-  <legend>Login</legend>
-  <form @submit.prevent="handleSubmit">
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input 
-        type="email" 
-        id="email" 
-        v-model="email" 
-        required
-        :class="{ 'error-input': errors.email }"
-      >
-      <div v-if="errors.email" class="error-message">
-        {{ errors.email }}
+  <div class="login-container">
+    <legend>Login</legend>
+    <form @submit.prevent="handleSubmit">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" v-model="email" required :class="{ 'error-input': errors.email }">
+        <div v-if="errors.email" class="error-message">
+          {{ errors.email }}
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label for="password">Contraseña:</label>
-      <div class="password-wrapper">
-        <input 
-          :type="showPassword ? 'text' : 'password'" 
-          id="password" 
-          v-model="password" 
-          required
-          :class="{ 'error-input': errors.password }"
-        >
-        <button
-          type="button"
-          class="toggle-password button"
-          @click="showPassword = !showPassword"
-          tabindex="-1"
-          aria-label="Mostrar/Ocultar contraseña"
-        >
-          <span class="shadow"></span>
-          <span class="edge"></span>
-          <span class="front">
-            {{ showPassword ? 'Ocultar' : 'Mostrar' }}
-          </span>
-        </button>
+      <div class="form-group">
+        <label for="password">Contraseña:</label>
+        <div class="password-wrapper">
+          <input :type="showPassword ? 'text' : 'password'" id="password" v-model="password" required
+            :class="{ 'error-input': errors.password }">
+          <button type="button" class="toggle-password button" @click="showPassword = !showPassword" tabindex="-1"
+            aria-label="Mostrar/Ocultar contraseña">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front">
+              {{ showPassword ? 'Ocultar' : 'Mostrar' }}
+            </span>
+          </button>
+        </div>
+        <div v-if="errors.password" class="error-message">
+          {{ errors.password }}
+        </div>
       </div>
-      <div v-if="errors.password" class="error-message">
-        {{ errors.password }}
+
+      <button type="submit" :disabled="isLoading" class="submit-button">
+        {{ isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
+      </button>
+
+      <div v-if="generalError" class="error-message">
+        {{ generalError }}
       </div>
-    </div>
-
-    <button 
-      type="submit" 
-      :disabled="isLoading"
-      class="submit-button"
-    >
-      {{ isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
-    </button>
-
-    <div v-if="generalError" class="error-message">
-      {{ generalError }}
-    </div>
-  </form>
-</div>
+    </form>
+  </div>
 </template>
 
 <script setup>
@@ -93,12 +73,12 @@ const handleSubmit = async () => {
 
   try {
     // Ajusta esta URL según tu backend
-    const response = await axios.post('http://127.0.0.1:5000/api/auth/login',{
+    const response = await axios.post('http://127.0.0.1:5000/api/auth/login', {
       email: email.value,
       user_password: password.value
     },
-  { withCredentials: true }
-  )
+      { withCredentials: true }
+    )
     await authStore.login(response.data.user)
     router.push({ name: 'Home' })
   } catch (error) {
@@ -118,7 +98,7 @@ const handleSubmit = async () => {
   --ch-c-white: #EEEEEE;
 }
 
-legend{
+legend {
   text-align: center;
   font-weight: 500;
   font-size: x-large;
@@ -150,6 +130,7 @@ input {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid #ddd;
+  color: var(--ch-c-white);
   border-radius: 4px;
   font-size: 1rem;
 }
@@ -192,7 +173,8 @@ input {
 
 .toggle-password .shadow,
 .toggle-password .edge {
-  display: none; /* Oculta los efectos grandes para hacerlo discreto */
+  display: none;
+  /* Oculta los efectos grandes para hacerlo discreto */
 }
 
 .error-input {
