@@ -1,32 +1,25 @@
 <template>
-<div class="filter-sidebar">
+  <div class="filter-sidebar">
     <h3>Filtrar por tipos</h3>
 
     <div class="filter-group">
-    <ul class="category-list">
-                <!-- Opción para ver todos los productos -->
-        <li 
-            @click="selectCategory(null)" 
-            :class="{ selected: selectedCategory === null }"
-        >
-            Todos los tipos
+      <ul class="category-list">
+        <!-- Opción para ver todos los productos -->
+        <li @click="selectCategory(null)" :class="{ selected: selectedCategory === null }">
+          Todos los tipos
         </li>
-        <li 
-        v-for="category in categories" 
-        :key="category.id"
-        @click="selectCategory(category.id)"
-        :class="{ selected: selectedCategory === category.id }"
-        >
-        {{ category.name }}
+        <li v-for="category in categories" :key="category.id" @click="selectCategory(category.id)"
+          :class="{ selected: selectedCategory === category.id }">
+          {{ category.name }}
         </li>
-    </ul>
+      </ul>
     </div>
-</div>
+  </div>
 </template>
-    
+
 <script setup>
 import { onMounted, ref } from 'vue'
-import { getAllTypeProduct } from '@/services/typeProductService' 
+import { getAllTypeProduct } from '@/services/typeProductService'
 const emit = defineEmits(['filterByCategory'])  // Declaras el evento
 
 const categories = ref([])
@@ -35,8 +28,8 @@ onMounted(async () => {
     const typeProducts = await getAllTypeProduct();
     console.log('Tipos de producto:', typeProducts)
     categories.value = typeProducts.map(tp => ({
-      id: tp[0],    // id_type_product
-      name: tp[2]   // name
+      id: tp.id_type_product,
+      name: tp.name
     }))
   } catch (error) {
     console.error('Error al cargar los tipos de producto:', error);
@@ -47,49 +40,48 @@ onMounted(async () => {
 const selectedCategory = ref(null)
 
 function selectCategory(id) {
-selectedCategory.value = id
-emit('filterByCategory', id)   // Emitimos hacia el padre
+  selectedCategory.value = id
+  emit('filterByCategory', id)   // Emitimos hacia el padre
 }
 </script>
 <style scoped>
 .filter-sidebar h3 {
-color: var(--ch-c-white);
-background-color: var(--ch-c-gray-dark);
-font-size: 1.4rem;
-margin-bottom: 16px;
-border-bottom: 2px solid var(--ch-c-yellow);
-padding-bottom: 8px;
-text-transform: uppercase;
-letter-spacing: 1px;
+  color: var(--ch-c-white);
+  background-color: var(--ch-c-gray-dark);
+  font-size: 1.4rem;
+  margin-bottom: 16px;
+  border-bottom: 2px solid var(--ch-c-yellow);
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .category-list {
-list-style: none;
-padding: 0;
-margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .category-list li {
-background-color: var(--ch-c-yellow);
-color: var(--ch-c-black);
-padding: 10px 16px;
-margin-bottom: 8px;
-border-radius: 6px;
-cursor: pointer;
-transition: all 0.3s ease;
-font-weight: 500;
+  background-color: var(--ch-c-yellow);
+  color: var(--ch-c-black);
+  padding: 10px 16px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
 }
 
 .category-list li:hover {
-background-color: var(--ch-c-gray-dark);
-color: var(--ch-c-white);
+  background-color: var(--ch-c-gray-dark);
+  color: var(--ch-c-white);
 }
 
 .category-list li.selected {
-background-color: var(--ch-c-black);
-color: var(--ch-c-yellow);
-font-weight: bold;
-transform: scale(1.03);
+  background-color: var(--ch-c-black);
+  color: var(--ch-c-yellow);
+  font-weight: bold;
+  transform: scale(1.03);
 }
-
 </style>
