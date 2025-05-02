@@ -11,6 +11,7 @@ import AdminDashboard from '@/pages/AdminDashboard.vue'
 import AdminProducts from '@/pages/AdminProducts.vue'
 import AdminBrands from '@/pages/AdminBrands.vue'
 import AdminCategories from '@/pages/AdminCategories.vue'
+import AdminTypeProduct from "@/pages/AdminTypeProduct.vue";
 
 const routes = [
     {
@@ -41,7 +42,8 @@ const routes = [
                     { path: '', name: 'AdminSummary', component: () => import('@/components/admin/AdminSummary.vue') },
                     { path: 'products', name: 'AdminProducts', component: AdminProducts },
                     { path: 'brands', name: 'AdminBrands', component: AdminBrands },
-                    { path: 'categories', name: 'AdminCategories', component: AdminCategories }
+                    { path: 'categories', name: 'AdminCategories', component: AdminCategories },
+                    { path: 'typeproducts', name: 'AdminTypeProduct', component: AdminTypeProduct }
                 ]
             }
 

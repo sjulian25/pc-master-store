@@ -18,6 +18,17 @@ export const useAuthStore = defineStore('auth', {
         this.isLoggedIn = false
         localStorage.removeItem('user')
         localStorage.removeItem('isLoggedIn')
+    },
+    checkSession() {
+        const user = localStorage.getItem('user')
+        const isLoggedIn = localStorage.getItem('isLoggedIn')
+        if (user && isLoggedIn === 'true') {
+            this.user = JSON.parse(user)
+            this.isLoggedIn = true
+        } else {
+            this.user = null
+            this.isLoggedIn = false
+        }
     }
     }
 })
