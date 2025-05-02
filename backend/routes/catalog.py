@@ -10,9 +10,11 @@ from controllers.brand_controller import (
     get_brands_controller,
     get_brands_by_id_controller,
     delete_brand_controller,
+    get_inactive_brands_controller,
     get_products_by_brand_controller,
     insert_brand_controller,
     activate_brand_controller,
+    update_brand_controller,
 )
 from controllers.product_controller import (
     get_all_products_controller,
@@ -116,6 +118,11 @@ def get_brands():
     )  # Llama al controlador para obtener todas las marcas
 
 
+@catalog_bp.route("/brand/inactive", methods=["GET"])
+def get_inactive_brands():
+    return get_inactive_brands_controller()
+
+
 @catalog_bp.route("/brand/<int:id_brand>", methods=["GET"])
 def get_brand_by_id(id_brand):
     response, status_code = get_brands_by_id_controller(id_brand)
@@ -152,6 +159,12 @@ def get_products_by_brand(id_brand):
         jsonify(response),
         status_code,
     )  # Llama al controlador para obtener productos por marca
+
+
+@catalog_bp.route("/brand/<int:id_brand>", methods=["PUT"])
+def update_brand(id_brand):
+    data = request.get_json()
+    return update_brand_controller(id_brand, data)
 
 
 # * ROUTES FOR TYPE PRODUCTS
