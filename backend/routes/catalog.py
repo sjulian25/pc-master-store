@@ -25,6 +25,7 @@ from controllers.product_controller import (
 )
 from controllers.type_products_controller import (
     get_all_type_of_products_controller,
+    get_inactive_type_products_controller,
     get_type_product_by_id_controller,
     create_type_product_controller,
 )
@@ -156,10 +157,9 @@ def list_type_products():
     return get_all_type_of_products_controller()
 
 
-# TODO: use controller to list deleted type products
 @catalog_bp.route("/type-products/inactive", methods=["GET"])
 def list_inactive_type_products():
-    pass
+    return get_inactive_type_products_controller()
 
 
 @catalog_bp.route("/type-products/<int:id_type_product>", methods=["GET"])

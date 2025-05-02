@@ -29,9 +29,16 @@ def get_all_type_of_products():
     return None
 
 
-# TODO: return type_products where field is_active=0
 def get_inactive_type_products():
-    pass
+    conn = get_connection()
+    if conn:
+        cursor = conn.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT * FROM type_product WHERE is_active = 0")
+        type_products = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return type_products
+    return []
 
 
 def get_type_product_by_id(id_type_product):

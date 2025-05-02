@@ -1,6 +1,7 @@
 from flask import jsonify
 from models.type_product import (
     get_all_type_of_products,
+    get_inactive_type_products,
     get_type_product_by_id,
     create_type_product,
 )
@@ -11,9 +12,11 @@ def get_all_type_of_products_controller():
     return jsonify(type_products), 200
 
 
-# TODO: return all type products where field is_active=0
 def get_inactive_type_products_controller():
-    pass
+    response = get_inactive_type_products()
+    if not response:
+        return jsonify({"message": "There's no deleted type products"}), 200
+    return jsonify(response), 200
 
 
 def get_type_product_by_id_controller(id_type_product):
