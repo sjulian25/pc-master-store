@@ -10,6 +10,7 @@ from controllers.brand_controller import (
     get_brands_controller,
     get_brands_by_id_controller,
     delete_brand_controller,
+    get_inactive_brands_controller,
     get_products_by_brand_controller,
     insert_brand_controller,
     activate_brand_controller,
@@ -115,6 +116,11 @@ def get_brands():
         jsonify(response),
         status_code,
     )  # Llama al controlador para obtener todas las marcas
+
+
+@catalog_bp.route("/brand/inactive", methods=["GET"])
+def get_inactive_brands():
+    return get_inactive_brands_controller()
 
 
 @catalog_bp.route("/brand/<int:id_brand>", methods=["GET"])

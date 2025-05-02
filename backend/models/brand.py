@@ -188,3 +188,17 @@ def update_brand(id_brand, data):
             return affected > 0
     except MySQLdb.Error as e:
         return False, e
+
+
+def get_inactive_brands():
+    try:
+        conn = get_connection()
+        if conn:
+            cursor = conn.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute("SELECT * FROM type_product WHERE is_active = 0")
+            brands = cursor.fetchall()
+            cursor.close()
+            conn.close()
+            return brands
+    except MySQLdb.Error as e:
+        return False, e
