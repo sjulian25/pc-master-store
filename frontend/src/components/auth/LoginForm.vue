@@ -93,12 +93,13 @@ const handleSubmit = async () => {
 
   try {
     // Ajusta esta URL según tu backend
-    const response = await axios.post('http://127.0.0.1:5000/api/auth/login', {
+    const response = await axios.post('http://127.0.0.1:5000/api/auth/login',{
       email: email.value,
       user_password: password.value
-    })
-
-    await authStore.login(response.data)
+    },
+  { withCredentials: true }
+  )
+    await authStore.login(response.data.user)
     router.push({ name: 'Home' })
   } catch (error) {
     generalError.value =
