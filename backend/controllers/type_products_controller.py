@@ -5,6 +5,7 @@ from models.type_product import (
     get_inactive_type_products,
     get_type_product_by_id,
     create_type_product,
+    restore_type_product,
     type_product_exists,
     update_type_product,
 )
@@ -66,6 +67,11 @@ def delete_type_product_controller(id_type_product):
         return jsonify(response), 500
 
 
-# TODO: restore an type product by its id
 def restore_type_product_controller(id_type_product):
-    pass
+    if not type_product_exists(id_type_product):
+        return jsonify({"message": "type product not found"}), 404
+    response = restore_type_product(id_type_product)
+    if response:
+        return jsonify({"message": "type product restored"}), 200
+    else:
+        return jsonify(response), 500
